@@ -9,6 +9,10 @@ int main(int argc, char** argv)
 
 	playMusicFromMemory(music, global_volume);
 
+	SDL_Surface* surface = SDL_LoadBMP("media/icon.bmp");
+	SDL_SetWindowIcon(gWindow, surface);
+	SDL_FreeSurface(surface);
+
 	bool quit = false;
 
 	SDL_Event e;
