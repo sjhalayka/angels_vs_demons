@@ -3987,7 +3987,7 @@ void display_func(void)
 
 		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 80, s);
 
-		s = "Art - Anna";
+		s = "Art - Anna Morozova";
 
 		sentence_width = get_sentence_width(mimgs, s);
 

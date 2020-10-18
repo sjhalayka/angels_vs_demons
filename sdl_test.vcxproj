@@ -166,12 +166,21 @@
     <ClInclude Include="matrix_utils.h" />
     <ClInclude Include="perlin.h" />
     <ClInclude Include="primitives.h" />
+    <ClInclude Include="resource2.h" />
+    <ClInclude Include="resource3.h" />
+    <ClInclude Include="resource4.h" />
     <ClInclude Include="soul.h" />
     <ClInclude Include="string_utilities.h" />
     <ClInclude Include="text_snippet.h" />
     <ClInclude Include="toolbar.h" />
     <ClInclude Include="vertex_fragment_shader.h" />
     <ClInclude Include="wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="sdl_test.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
