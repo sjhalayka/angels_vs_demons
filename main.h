@@ -3993,13 +3993,13 @@ void display_func(void)
 
 		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 100, s);
 
-		s = "IMGUI code - Omar Cornut";
+		s = "Dear ImGui library - Omar Cornut";
 
 		sentence_width = get_sentence_width(mimgs, s);
 
 		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 120, s);
 
-		s = "Audio helper code - Jake Besworth";
+		s = "Simple SDL2 Audio library - Jake Besworth";
 
 		sentence_width = get_sentence_width(mimgs, s);
 
