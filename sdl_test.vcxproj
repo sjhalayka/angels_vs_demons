@@ -166,6 +166,8 @@
     <ClInclude Include="matrix_utils.h" />
     <ClInclude Include="perlin.h" />
     <ClInclude Include="primitives.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="resource2.h" />
     <ClInclude Include="resource3.h" />
     <ClInclude Include="resource4.h" />
