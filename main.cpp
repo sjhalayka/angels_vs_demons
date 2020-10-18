@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 				if (state == STATE_GAME || state == STATE_PAUSE_SCREEN)
 				{
 					if (1 == do_quit_messagebox())
-						save_to_disk("savegame.bin", curr_level);
+						save_to_disk("levels/savegame.bin", curr_level);
 				}
 
 				quit = true;

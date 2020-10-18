@@ -702,7 +702,7 @@ bool init()
 	arcdemon_fortress_image.Pixels = tile_data[3];
 
 
-	if (false == parse_levels("levels.txt"))
+	if (false == parse_levels("levels/levels.txt"))
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load levels.txt or level data.", gWindow);
 		enable_developer_mode();
@@ -3949,11 +3949,6 @@ void display_func(void)
 
 		ortho.use_program();
 
-		string s = "Paused. Press esc to continue!";
-
-		size_t sentence_width = get_sentence_width(mimgs, s);
-		size_t window_width = win_x;
-		size_t window_height = win_y;
 
 		RGB_uchar text_colour;
 
@@ -3964,7 +3959,53 @@ void display_func(void)
 		for (size_t i = 0; i < mimgs.size(); i++)
 			mimgs[i].opengl_init(text_colour);
 
-		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 2, s);
+
+
+		string s = "Paused. Press esc to continue!";
+
+		size_t sentence_width = get_sentence_width(mimgs, s);
+		size_t window_width = win_x;
+		size_t window_height = win_y;
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3, s);
+
+		s = "Credits:";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 40, s);
+
+		s = "Programming - Shawn Halayka";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 60, s);
+
+		s = "Design - Sam Rotthier, Shawn Halayka";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 80, s);
+
+		s = "Art - Anna";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 100, s);
+
+		s = "IMGUI code - Omar Cornut";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 120, s);
+
+		s = "Audio helper code - Jake Besworth";
+
+		sentence_width = get_sentence_width(mimgs, s);
+
+		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 140, s);
+
+
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL2_NewFrame(gWindow);
@@ -3973,7 +4014,7 @@ void display_func(void)
 		ImGui::SetNextWindowSize(ImVec2(400, 150));
 		ImGui::SetNextWindowPos(ImVec2(float(win_x / 2 - 400 / 2), 10));
 
-		ImGui::Begin("GUI by Dear Imgui!");
+		ImGui::Begin("Controls");
 		ImGui::SliderInt("Volume", &global_volume, 0, SDL_MIX_MAXVOLUME);
 		ImGui::Checkbox("Hard mode", &hard_mode);
 
@@ -4475,7 +4516,7 @@ void handle_left_mouse_click(int x, int y)
 	}
 	else if (state == STATE_TITLE_SCREEN)
 	{
-		if (false == load_from_disk("savegame.bin", curr_level))
+		if (false == load_from_disk("levels/savegame.bin", curr_level))
 			init_level(false);
 		else
 			init_level(false);
@@ -5088,7 +5129,7 @@ bool parse_levels(const char* const filename)
 
 	level_data ld;
 
-	if (true == load_from_disk("savegame.bin", ld))
+	if (true == load_from_disk("levels/savegame.bin", ld))
 	{
 		curr_level = ld;
 
