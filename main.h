@@ -1283,7 +1283,8 @@ void game_idle_func(void)
 			num_rain_picks = 1;
 		}
 
-
+		// Take into account that the enemy can click about 5 times per second on the sea, to fish
+		curr_level.bad_guy_fish_total += 5;
 
 
 		for (size_t i = 0; i < num_rain_picks; i++)
