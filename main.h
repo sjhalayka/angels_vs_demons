@@ -90,7 +90,7 @@ bool developer_mode = false;
 
 bool hard_mode = true;
 size_t num_rain_picks = 1;
-//int volume = SDL_MIX_MAXVOLUME;
+
 
 
 
@@ -1283,8 +1283,11 @@ void game_idle_func(void)
 			num_rain_picks = 1;
 		}
 
-		// Take into account that the enemy can click about 5 times per second on the sea, to fish
-		curr_level.bad_guy_fish_total += 5;
+		// Take into account that the enemy can click x times per second on the sea, to fish
+		if(hard_mode)
+			curr_level.bad_guy_fish_total += 5;
+		else
+			curr_level.bad_guy_fish_total += 1;
 
 
 		for (size_t i = 0; i < num_rain_picks; i++)
@@ -2712,7 +2715,7 @@ void display_func(void)
 		glDeleteTextures(1, &tex_handle);
 		glDeleteBuffers(1, &vbo_handle);
 
-		string s = "Click anywhere!";
+		string s = "You beat the game! Click anywhere!";
 
 		size_t sentence_width = get_sentence_width(mimgs, s);
 		size_t window_width = win_x;
@@ -2878,7 +2881,7 @@ void display_func(void)
 		glDeleteTextures(1, &tex_handle);
 		glDeleteBuffers(1, &vbo_handle);
 
-		string s = "Click anywhere!";
+		string s = "You lose! Click anywhere!";
 
 		size_t sentence_width = get_sentence_width(mimgs, s);
 		size_t window_width = win_x;
@@ -3044,7 +3047,7 @@ void display_func(void)
 		glDeleteTextures(1, &tex_handle);
 		glDeleteBuffers(1, &vbo_handle);
 
-		string s = "Click anywhere!";
+		string s = "You win! Click anywhere!";
 
 		size_t sentence_width = get_sentence_width(mimgs, s);
 		size_t window_width = win_x;
