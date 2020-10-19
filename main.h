@@ -393,10 +393,12 @@ void get_controls_from_disk(const char* const file_name)
 	string line;
 
 	getline(in, line);
+	iss.clear();
 	iss.str(line);
 	iss >> global_volume;
 		
 	getline(in, line);
+	iss.clear();
 	iss.str(line);
 	iss >> hard_mode;
 
@@ -410,8 +412,8 @@ void get_controls_from_disk(const char* const file_name)
 
 	for (size_t i = 0; i < 3; i++)
 	{
-		istringstream iss(vs[i]);
-		iss >> player_colour[i];
+		istringstream iss2(vs[i]);
+		iss2 >> player_colour[i];
 	}
 
 
@@ -425,8 +427,8 @@ void get_controls_from_disk(const char* const file_name)
 
 	for (size_t i = 0; i < 3; i++)
 	{
-		istringstream iss(vs[i]);
-		iss >> enemy_colour[i];
+		istringstream iss2(vs[i]);
+		iss2 >> enemy_colour[i];
 	}
 }
 
@@ -4667,6 +4669,8 @@ void game_handle_keys(unsigned char key, int x, int y)
 	if (tolower(key) == escape_char)
 	{
 		pause_start = std::chrono::high_resolution_clock::now();
+
+		get_controls_from_disk("settings.txt");
 
 		state = STATE_PAUSE_SCREEN;
 		return;
