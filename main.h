@@ -84,13 +84,14 @@ public:
 vector<level_data> levels;
 
 level_data curr_level;
-
+	
 
 bool developer_mode = false;
 
-bool hard_mode = true;
-size_t num_rain_picks = 1;
 
+
+int difficulty = 1; 
+int max_difficulty = 10;
 
 
 
@@ -372,7 +373,7 @@ int state = STATE_LITTLE_RED_SPLASH_SCREEN;
 void save_controls_to_disk(const char* const file_name)
 {
 	ofstream out(file_name);
-	out << global_volume << '\n' << hard_mode << endl;
+	out << global_volume << '\n' << difficulty << endl;
 
 	out << player_colour[0] << ' ' << player_colour[1] << ' ' << player_colour[2] << endl;
 	out << enemy_colour[0] << ' ' << enemy_colour[1] << ' ' << enemy_colour[2] << endl;
@@ -400,7 +401,7 @@ void get_controls_from_disk(const char* const file_name)
 	getline(in, line);
 	iss.clear();
 	iss.str(line);
-	iss >> hard_mode;
+	iss >> difficulty;
 
 	getline(in, line);
 
@@ -1272,27 +1273,13 @@ void game_idle_func(void)
 	{
 		last_refresh_at = end_time;
 
-		size_t chance = 0;
+		size_t chance = (max_difficulty + 1) - difficulty;
+		//chance = chance * chance;
 
-		if (hard_mode)
-		{
-			chance = 1;
-			num_rain_picks = 1;
-		}
-		else
-		{
-			chance = 5;
-			num_rain_picks = 1;
-		}
-
-		// Take into account that the enemy can click x times per second on the sea, to fish
-		if(hard_mode)
-			curr_level.bad_guy_fish_total += 5;
-		else
-			curr_level.bad_guy_fish_total += 1;
+		curr_level.bad_guy_fish_total += difficulty;
 
 
-		for (size_t i = 0; i < num_rain_picks; i++)
+		for (size_t i = 0; i < 1 /*num_rain_picks*/; i++)
 		{
 			if (mt_rand() % chance == 0)
 			{
@@ -3987,7 +3974,7 @@ void display_func(void)
 
 		print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 3 + 60, s);
 
-		s = "Design - Sam Rotthier, Shawn Halayka";
+		s = "Design - Sam Rotthier, Shawn Halayka, Indra Ongena";
 
 		sentence_width = get_sentence_width(mimgs, s);
 
@@ -4022,7 +4009,7 @@ void display_func(void)
 
 		ImGui::Begin("Controls");
 		ImGui::SliderInt("Volume", &global_volume, 0, SDL_MIX_MAXVOLUME);
-		ImGui::Checkbox("Hard mode", &hard_mode);
+		ImGui::SliderInt("Difficulty", &difficulty, 1, max_difficulty);
 
 		
 		ImGui::ColorEdit3("Player colour", player_colour);
