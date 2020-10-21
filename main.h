@@ -17,7 +17,7 @@
 #include "logging_system.h"
 #include "angel_demon.h"
 #include "soul.h"
-//#include "text_snippet.h"
+#include "text_snippet.h"
 //#include "wave.h"
 #include "toolbar.h"
 #include "string_utilities.h"
@@ -134,7 +134,7 @@ vector<triangle> untransformed_sea_triangles;
 
 list<soul> souls;
 //list<wave> waves;
-//list<text_snippet> text_snippets;
+list<text_snippet> text_snippets;
 
 bool good_guy_mode = true;
 good_type g_type = angel_none;
@@ -285,18 +285,18 @@ long long unsigned int arcdemon_boat_max_hit_points = 100;
 long long unsigned int demon_fortress_max_hit_points = 200;
 long long unsigned int arcdemon_fortress_max_hit_points = 200;
 
-float angel_max_mass = 0.001f;
-float arcangel_max_mass = 0.001f;
-float angel_boat_max_mass = 0.005f;
-float arcangel_boat_max_mass = 0.005f;
-float angel_fortress_max_mass = 0.01f;
-float arcangel_fortress_max_mass = 0.01f;
-float demon_max_mass = 0.001f;
-float arcdemon_max_mass = 0.001f;
-float demon_boat_max_mass = 0.005f;
-float arcdemon_boat_max_mass = 0.005f;
-float demon_fortress_max_mass = 0.01f;
-float arcdemon_fortress_max_mass = 0.01f;
+float angel_max_mass = 0.1f;
+float arcangel_max_mass = 0.1f;
+float angel_boat_max_mass = 0.5f;
+float arcangel_boat_max_mass = 0.5f;
+float angel_fortress_max_mass = 1.0f;
+float arcangel_fortress_max_mass = 1.0f;
+float demon_max_mass = 0.1f;
+float arcdemon_max_mass = 0.1f;
+float demon_boat_max_mass = 0.5f;
+float arcdemon_boat_max_mass = 0.5f;
+float demon_fortress_max_mass = 1.0f;
+float arcdemon_fortress_max_mass = 1.0f;
 
 #define min_f(a, b, c)  (fminf(a, fminf(b, c)))
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
@@ -1274,7 +1274,7 @@ void game_idle_func(void)
 		last_refresh_at = end_time;
 
 		size_t chance = (max_difficulty + 1) - difficulty;
-		//chance = chance * chance;
+		chance = chance * chance;
 
 		curr_level.bad_guy_fish_total += difficulty;
 
@@ -1444,20 +1444,20 @@ void game_idle_func(void)
 
 			float y = static_cast<float>(mt_rand()) / static_cast<float>(static_cast<long unsigned int>(-1));
 
-			long long signed int damage = static_cast<long signed int>(ceil(avg_max_damage * (1.0f - t) * y));
+			long long signed int damage = static_cast<long signed int>(round(avg_max_damage * (1.0f - t) * y));
 
-			//if (1)//damage > 0)
-			//{
-			//	ostringstream oss;
-			//	oss << "-" << damage;
+			if (damage > 0)
+			{
+				ostringstream oss;
+				oss << "-" << damage;
 
-			//	text_snippet ts(oss.str());
-			//	ts.untransformed_location = i->untransformed_location;
-			//	ts.start_time = std::chrono::high_resolution_clock::now();
-			//	ts.x_offset = 32 - static_cast<long signed int>(get_sentence_width(mimgs, oss.str())/2);
-			//	ts.y_offset = -48;
-			//	text_snippets.push_back(ts);
-			//}
+				text_snippet ts(oss.str());
+				ts.untransformed_location = i->untransformed_location;
+				ts.start_time = std::chrono::high_resolution_clock::now();
+				ts.x_offset = 32 - static_cast<long signed int>(get_sentence_width(mimgs, oss.str())/2);
+				ts.y_offset = -48;
+				text_snippets.push_back(ts);
+			}
 
 			if (false == developer_mode)
 				i->hit_points -= damage;
@@ -1549,21 +1549,21 @@ void game_idle_func(void)
 
 			float y = static_cast<float>(mt_rand()) / static_cast<float>(static_cast<long unsigned int>(-1));
 
-			long long signed int damage = static_cast<long signed int>(ceil(avg_max_damage * (1.0f - t) * y));
+			long long signed int damage = static_cast<long signed int>(round(avg_max_damage * (1.0f - t) * y));
 
 
-			//if (1)//damage > 0)
-			//{
-			//	ostringstream oss;
-			//	oss << "-" << damage;
+			if (damage > 0)
+			{
+				ostringstream oss;
+				oss << "-" << damage;
 
-			//	text_snippet ts(oss.str());
-			//	ts.untransformed_location = i->untransformed_location;
-			//	ts.start_time = std::chrono::high_resolution_clock::now();
-			//	ts.x_offset = 32 - static_cast<long signed int>(get_sentence_width(mimgs, oss.str()) / 2);
-			//	ts.y_offset = -48;
-			//	text_snippets.push_back(ts);
-			//}
+				text_snippet ts(oss.str());
+				ts.untransformed_location = i->untransformed_location;
+				ts.start_time = std::chrono::high_resolution_clock::now();
+				ts.x_offset = 32 - static_cast<long signed int>(get_sentence_width(mimgs, oss.str()) / 2);
+				ts.y_offset = -48;
+				text_snippets.push_back(ts);
+			}
 
 
 			if (false == developer_mode)
@@ -1711,21 +1711,7 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 	float t_demon = sqrtf(1.0f - U_demon * U_demon);
 
 	vertex_3 colour(1.0f, 1 - t_demon, 1 - t_angel);
-	//// https://gist.github.com/yoggy/8999625
-	//	unsigned char hsv_x = 0, hsv_y = 0, hsv_z = 0;
-	//
-	//	rgb2hsv((unsigned char)colour.x*255, (unsigned char)colour.y * 255, (unsigned char)colour.z * 255, hsv_x, hsv_y, hsv_z);
-	//
-	//	hsv_x += 90;
-	//	
-	//	if (hsv_x > 180)
-	//		hsv_x -= 180;
-	//
-	//	RGB_uchar rgb = HSBtoRGB(hsv_x, hsv_y, hsv_z);
-	//
-	//	colour.x = (float)rgb.r / 255;
-	//	colour.y = (float)rgb.g / 255;
-	//	colour.z = (float)rgb.b / 255;
+
 
 	vertex_3 red(1.0f, 0.0f, 0.0f);
 
@@ -1734,7 +1720,7 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 
 	vertex_3 final_colour = lin_interp(red, pc, 1 - t_angel);
 	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
-	return final_colour;
+	return colour;// final_colour;
 
 
 	//float gray_level = final_colour.x + final_colour.y + final_colour.z;
@@ -1798,7 +1784,7 @@ vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
 	vertex_3 final_colour = lin_interp(white, pc, 1 - t_angel);
 	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
 
-	return final_colour;
+	return colour;// final_colour;
 }
 
 
@@ -2513,31 +2499,31 @@ void draw_game_objects(void)
 
 
 
-	//text_colour.r = 0;
-	//text_colour.g = 0;
-	//text_colour.b = 0;
+	text_colour.r = 0;
+	text_colour.g = 0;
+	text_colour.b = 0;
 
-	//for (size_t i = 0; i < mimgs.size(); i++)
-	//	mimgs[i].opengl_init(text_colour, 127);
+	for (size_t i = 0; i < mimgs.size(); i++)
+		mimgs[i].opengl_init(text_colour);
 
-	//for (list<text_snippet>::iterator i = text_snippets.begin(); i != text_snippets.end(); )
-	//{
-	//	vertex_3 transformed_vertex = i->untransformed_location;
-	//	transform(transformed_vertex);
+	for (list<text_snippet>::iterator i = text_snippets.begin(); i != text_snippets.end(); )
+	{
+		vertex_3 transformed_vertex = i->untransformed_location;
+		transform(transformed_vertex);
 
-	//	std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
-	//	std::chrono::duration<float, std::milli> elapsed = end_time - i->start_time;
+		std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float, std::milli> elapsed = end_time - i->start_time;
 
-	//	if (elapsed.count() > 500)
-	//		i = text_snippets.erase(i);
-	//	else
-	//	{
-	//		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
-	//		i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
+		if (elapsed.count() > 500)
+			i = text_snippets.erase(i);
+		else
+		{
+			vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
+			i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
 
-	//		i++;
-	//	}
-	//}
+			i++;
+		}
+	}
 
 }
 
@@ -5140,6 +5126,7 @@ bool parse_levels(const char* const filename)
 		else
 		{
 			curr_level = levels[ld.level_hint];
+			init_level(false);
 		}
 
 	}
@@ -5147,6 +5134,7 @@ bool parse_levels(const char* const filename)
 	{
 		curr_level = levels[0];
 		curr_level.level_hint = 0;
+		init_level(false);
 	}
 
 	return true;
