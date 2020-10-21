@@ -93,7 +93,7 @@ bool developer_mode = false;
 int difficulty = 1; 
 int max_difficulty = 10;
 
-
+bool classic_rendering = false;
 
 
 float player_colour[4] = { 1.0f,0.5f,0.0f,1.0f };
@@ -373,13 +373,10 @@ int state = STATE_LITTLE_RED_SPLASH_SCREEN;
 void save_controls_to_disk(const char* const file_name)
 {
 	ofstream out(file_name);
-	out << global_volume << '\n' << difficulty << endl;
+	out << global_volume << '\n' << difficulty << '\n' << classic_rendering << endl;
 
 	out << player_colour[0] << ' ' << player_colour[1] << ' ' << player_colour[2] << endl;
 	out << enemy_colour[0] << ' ' << enemy_colour[1] << ' ' << enemy_colour[2] << endl;
-
-
-
 }
 
 void get_controls_from_disk(const char* const file_name)
@@ -402,6 +399,12 @@ void get_controls_from_disk(const char* const file_name)
 	iss.clear();
 	iss.str(line);
 	iss >> difficulty;
+
+	getline(in, line);
+	iss.clear();
+	iss.str(line);
+	iss >> classic_rendering;
+
 
 	getline(in, line);
 
@@ -1720,7 +1723,12 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 
 	vertex_3 final_colour = lin_interp(red, pc, 1 - t_angel);
 	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
-	return colour;// final_colour;
+
+	
+	if(classic_rendering)
+		return lin_interp(red, colour, 0.9f);
+	else
+		return final_colour;
 
 
 	//float gray_level = final_colour.x + final_colour.y + final_colour.z;
@@ -1784,7 +1792,10 @@ vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
 	vertex_3 final_colour = lin_interp(white, pc, 1 - t_angel);
 	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
 
-	return colour;// final_colour;
+	if (classic_rendering)
+		return lin_interp(white, colour, 0.9f);
+	else
+		return final_colour;
 }
 
 
@@ -3990,18 +4001,30 @@ void display_func(void)
 		ImGui_ImplSDL2_NewFrame(gWindow);
 		ImGui::NewFrame();
 
-		ImGui::SetNextWindowSize(ImVec2(400, 150));
+
+		if (false == classic_rendering)
+		{
+			ImGui::SetNextWindowSize(ImVec2(400, 150));
+		}
+		else
+		{
+			ImGui::SetNextWindowSize(ImVec2(400, 100));
+		}
+
+
+
 		ImGui::SetNextWindowPos(ImVec2(float(win_x / 2 - 400 / 2), 10));
 
 		ImGui::Begin("Controls");
 		ImGui::SliderInt("Volume", &global_volume, 0, SDL_MIX_MAXVOLUME);
 		ImGui::SliderInt("Difficulty", &difficulty, 1, max_difficulty);
-
+		ImGui::Checkbox("Classic rendering", &classic_rendering);
 		
-		ImGui::ColorEdit3("Player colour", player_colour);
-
-
-		ImGui::ColorEdit3("Enemy colour", enemy_colour);
+		if (false == classic_rendering)
+		{
+			ImGui::ColorEdit3("Player colour", player_colour);
+			ImGui::ColorEdit3("Enemy colour", enemy_colour);
+		}
 
 		ImGui::End();
 
