@@ -285,18 +285,18 @@ long long unsigned int arcdemon_boat_max_hit_points = 100;
 long long unsigned int demon_fortress_max_hit_points = 200;
 long long unsigned int arcdemon_fortress_max_hit_points = 200;
 
-float angel_max_mass = 0.1f;
-float arcangel_max_mass = 0.1f;
-float angel_boat_max_mass = 0.5f;
-float arcangel_boat_max_mass = 0.5f;
-float angel_fortress_max_mass = 1.0f;
-float arcangel_fortress_max_mass = 1.0f;
-float demon_max_mass = 0.1f;
-float arcdemon_max_mass = 0.1f;
-float demon_boat_max_mass = 0.5f;
-float arcdemon_boat_max_mass = 0.5f;
-float demon_fortress_max_mass = 1.0f;
-float arcdemon_fortress_max_mass = 1.0f;
+float angel_max_mass = 0.01f;
+float arcangel_max_mass = 0.01f;
+float angel_boat_max_mass = 0.015f;
+float arcangel_boat_max_mass = 0.015f;
+float angel_fortress_max_mass = 0.02f;
+float arcangel_fortress_max_mass = 0.02f;
+float demon_max_mass = 0.01f;
+float arcdemon_max_mass = 0.01f;
+float demon_boat_max_mass = 0.015f;
+float arcdemon_boat_max_mass = 0.015f;
+float demon_fortress_max_mass = 0.02f;
+float arcdemon_fortress_max_mass = 0.02f;
 
 #define min_f(a, b, c)  (fminf(a, fminf(b, c)))
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
@@ -4496,9 +4496,31 @@ void handle_left_mouse_click(int x, int y)
 	else if (state == STATE_TITLE_SCREEN)
 	{
 		if (false == load_from_disk("levels/savegame.bin", curr_level))
+		{
+			for (list<good_guy>::iterator i = curr_level.angels.begin(); i != curr_level.angels.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
+			for (list<bad_guy>::iterator i = curr_level.demons.begin(); i != curr_level.demons.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
 			init_level(false);
+
+			level_started_at = std::chrono::high_resolution_clock::now();
+			last_refresh_at = level_started_at;
+		}
 		else
+		{
+			for (list<good_guy>::iterator i = curr_level.angels.begin(); i != curr_level.angels.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
+			for (list<bad_guy>::iterator i = curr_level.demons.begin(); i != curr_level.demons.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
 			init_level(false);
+
+			level_started_at = std::chrono::high_resolution_clock::now();
+			last_refresh_at = level_started_at;
+		}
 
 		state = STATE_GAME;
 
@@ -4907,6 +4929,9 @@ void game_handle_keys(unsigned char key, int x, int y)
 					i->start_time = std::chrono::high_resolution_clock::now();
 
 				init_level(false);
+
+				level_started_at = std::chrono::high_resolution_clock::now();
+				last_refresh_at = level_started_at;
 			}
 
 			return;
@@ -4933,6 +4958,9 @@ void game_handle_keys(unsigned char key, int x, int y)
 					i->start_time = std::chrono::high_resolution_clock::now();
 
 				init_level(false);
+
+				level_started_at = std::chrono::high_resolution_clock::now();
+				last_refresh_at = level_started_at;
 
 			}
 
@@ -5126,15 +5154,34 @@ bool parse_levels(const char* const filename)
 		else
 		{
 			curr_level = levels[ld.level_hint];
-			init_level(false);
-		}
 
+			for (list<good_guy>::iterator i = curr_level.angels.begin(); i != curr_level.angels.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
+			for (list<bad_guy>::iterator i = curr_level.demons.begin(); i != curr_level.demons.end(); i++)
+				i->start_time = std::chrono::high_resolution_clock::now();
+
+			init_level(false);
+
+			level_started_at = std::chrono::high_resolution_clock::now();
+			last_refresh_at = level_started_at;
+		}
 	}
 	else
 	{
 		curr_level = levels[0];
 		curr_level.level_hint = 0;
+
+		for (list<good_guy>::iterator i = curr_level.angels.begin(); i != curr_level.angels.end(); i++)
+			i->start_time = std::chrono::high_resolution_clock::now();
+
+		for (list<bad_guy>::iterator i = curr_level.demons.begin(); i != curr_level.demons.end(); i++)
+			i->start_time = std::chrono::high_resolution_clock::now();
+
 		init_level(false);
+
+		level_started_at = std::chrono::high_resolution_clock::now();
+		last_refresh_at = level_started_at;
 	}
 
 	return true;
