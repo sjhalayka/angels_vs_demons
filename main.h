@@ -66,6 +66,14 @@ Audio* music = 0;
 
 bool parse_levels(const char* const filename);
 
+bool draw_level_end_banner = false;
+bool win_banner = false; 
+std::chrono::high_resolution_clock::time_point level_end_banner_start_time;
+void show_win_banner(void);
+void show_lose_banner(void);
+
+
+
 
 
 class level_data
@@ -1256,6 +1264,9 @@ void init_level(bool clear_angels_and_demons)
 
 	level_started_at = std::chrono::high_resolution_clock::now();
 	last_refresh_at = level_started_at;
+
+	draw_level_end_banner = false;
+	win_banner = false;
 }
 
 
@@ -1277,6 +1288,33 @@ void game_idle_func(void)
 {
 	if (developer_mode)
 		return;
+
+	if (true == draw_level_end_banner)
+	{
+		std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float, std::milli> elapsed = end_time - level_end_banner_start_time;
+
+		if (elapsed.count() > 3000)
+		{
+			if (false == win_banner)
+			{
+				state = STATE_LEVEL_LOSE;
+			}
+			else
+			{
+				if (curr_level.level_hint < (levels.size() - 1))
+				{
+					state = STATE_LEVEL_WIN;
+				}
+				else
+				{
+					state = STATE_GAME_END;
+				}
+			}
+		}
+
+		return;
+	}
 
 	std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float, std::milli> elapsed = end_time - last_refresh_at;
@@ -1480,8 +1518,13 @@ void game_idle_func(void)
 
 				if (curr_level.angels.size() == 0)
 				{
-					state = STATE_LEVEL_LOSE;
-					return;
+					draw_level_end_banner = true;
+					win_banner = false;
+					level_end_banner_start_time = std::chrono::high_resolution_clock::now();
+
+
+					//state = STATE_LEVEL_LOSE;
+					//return;
 				}
 			}
 			else
@@ -1587,16 +1630,20 @@ void game_idle_func(void)
 
 				if (curr_level.demons.size() == 0)
 				{
-					if (curr_level.level_hint < (levels.size() - 1))
-					{
-						state = STATE_LEVEL_WIN;
-						return;
-					}
-					else
-					{
-						state = STATE_GAME_END;
-						return;
-					}
+					draw_level_end_banner = true;
+					win_banner = true;
+					level_end_banner_start_time = std::chrono::high_resolution_clock::now();
+
+					//if (curr_level.level_hint < (levels.size() - 1))
+					//{
+					//	//state = STATE_LEVEL_WIN;
+					//	return;
+					//}
+					//else
+					//{
+					//	state = STATE_GAME_END;
+					//	return;
+					//}
 				}
 			}
 			else
@@ -3755,6 +3802,13 @@ void display_func(void)
 		}
 
 
+		if (true == draw_level_end_banner)
+		{
+			if (true == win_banner)
+				show_win_banner();
+			else
+				show_lose_banner();
+		}
 
 
 
@@ -4511,6 +4565,29 @@ void handle_left_mouse_click(int x, int y)
 	}
 	else if (state == STATE_GAME)
 	{
+		if (true == draw_level_end_banner)
+		{
+			if (false == win_banner)
+			{		
+				state = STATE_LEVEL_LOSE;
+			}
+			else
+			{
+				if (curr_level.level_hint < (levels.size() - 1))
+				{
+					state = STATE_LEVEL_WIN;
+				}
+				else
+				{
+					state = STATE_GAME_END;
+				}
+			}
+
+			return;
+		}
+
+
+
 		game_handle_left_mouse_click(x, y);
 	}
 }
@@ -5140,6 +5217,343 @@ bool parse_levels(const char* const filename)
 
 
 
+
+void show_win_banner(void)
+{
+	ostringstream oss;
+
+	oss << "You win!";
+
+	string s = oss.str();
+
+	size_t sentence_width = get_sentence_width(mimgs, s);
+	size_t window_width = win_x;
+	size_t window_height = win_y;
+
+	GLuint vbo_handle = 0;
+
+	glGenBuffers(1, &vbo_handle);
+
+	complex<float> v0w;
+	complex<float> v1w;
+	complex<float> v2w;
+	complex<float> v3w;
+
+	complex<float> v0ndc;
+	complex<float> v1ndc;
+	complex<float> v2ndc;
+	complex<float> v3ndc;
+
+	float alpha = 1.0f;
+
+	v0w = complex<float>(static_cast<float>(0), static_cast<float>(window_height / 2 - 20));
+	v1w = complex<float>(static_cast<float>(0), static_cast<float>(window_height / 2 + 36));
+	v2w = complex<float>(static_cast<float>(win_x), static_cast<float>(window_height / 2 + 36));
+	v3w = complex<float>(static_cast<float>(win_x), static_cast<float>(window_height / 2 - 20));
+
+	v0ndc = get_ndc_coords_from_window_coords(win_x, win_y, v0w);
+	v1ndc = get_ndc_coords_from_window_coords(win_x, win_y, v1w);
+	v2ndc = get_ndc_coords_from_window_coords(win_x, win_y, v2w);
+	v3ndc = get_ndc_coords_from_window_coords(win_x, win_y, v3w);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	vector<GLfloat> fullscreen_vertex_data = {
+
+		// 3D position, 4D colour coordinate
+		v0ndc.real(), v0ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha, // vertex 0
+		v2ndc.real(), v2ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 2
+		v1ndc.real(), v1ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 1
+
+		v0ndc.real(), v0ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 0
+		v3ndc.real(), v3ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 3
+		v2ndc.real(), v2ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha // vertex 2
+
+	};
+
+	GLuint components_per_vertex = 7;
+	GLuint components_per_position = 3;
+	GLuint components_per_colour = 4;
+	GLuint num_vertices = static_cast<GLuint>(fullscreen_vertex_data.size()) / components_per_vertex;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_handle);
+
+	glBufferData(GL_ARRAY_BUFFER, fullscreen_vertex_data.size() * sizeof(GLfloat), &fullscreen_vertex_data[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "position"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "position"),
+		components_per_position,
+		GL_FLOAT,
+		GL_FALSE,
+		components_per_vertex * sizeof(GLfloat),
+		NULL);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "colour"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "colour"),
+		components_per_colour,
+		GL_FLOAT,
+		GL_TRUE,
+		components_per_vertex * sizeof(GLfloat),
+		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+
+	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+
+	glLineWidth(4.0f);
+
+	vector<float> lines;
+	lines.push_back(v0ndc.real());
+	lines.push_back(v0ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v1ndc.real());
+	lines.push_back(v1ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v2ndc.real());
+	lines.push_back(v2ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v3ndc.real());
+	lines.push_back(v3ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	components_per_vertex = 7;
+	components_per_position = 3;
+	components_per_colour = 4;
+
+	num_vertices = static_cast<GLuint>(lines.size()) / components_per_vertex;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_handle);
+
+	glBufferData(GL_ARRAY_BUFFER, lines.size() * sizeof(GLfloat), &lines[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "position"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "position"),
+		components_per_position,
+		GL_FLOAT,
+		GL_FALSE,
+		components_per_vertex * sizeof(GLfloat),
+		NULL);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "colour"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "colour"),
+		components_per_colour,
+		GL_FLOAT,
+		GL_TRUE,
+		components_per_vertex * sizeof(GLfloat),
+		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+
+
+
+	glDrawArrays(GL_LINE_LOOP, 0, num_vertices);
+
+
+
+	glDeleteBuffers(1, &vbo_handle);
+
+
+
+	ortho.use_program();
+
+	RGB_uchar text_colour;
+
+	text_colour.r = 255;
+	text_colour.g = 255;
+	text_colour.b = 255;
+
+	for (size_t i = 0; i < mimgs.size(); i++)
+		mimgs[i].opengl_init(text_colour, alpha * 255.0f);
+
+	print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 2, s);
+
+}
+
+
+void show_lose_banner(void)
+{
+	ostringstream oss;
+
+	oss << "You lose!";
+
+	string s = oss.str();
+
+	size_t sentence_width = get_sentence_width(mimgs, s);
+	size_t window_width = win_x;
+	size_t window_height = win_y;
+
+	GLuint vbo_handle = 0;
+
+	glGenBuffers(1, &vbo_handle);
+
+	complex<float> v0w;
+	complex<float> v1w;
+	complex<float> v2w;
+	complex<float> v3w;
+
+	complex<float> v0ndc;
+	complex<float> v1ndc;
+	complex<float> v2ndc;
+	complex<float> v3ndc;
+
+	float alpha = 1.0f;
+
+	v0w = complex<float>(static_cast<float>(0), static_cast<float>(window_height / 2 - 20));
+	v1w = complex<float>(static_cast<float>(0), static_cast<float>(window_height / 2 + 36));
+	v2w = complex<float>(static_cast<float>(win_x), static_cast<float>(window_height / 2 + 36));
+	v3w = complex<float>(static_cast<float>(win_x), static_cast<float>(window_height / 2 - 20));
+
+	v0ndc = get_ndc_coords_from_window_coords(win_x, win_y, v0w);
+	v1ndc = get_ndc_coords_from_window_coords(win_x, win_y, v1w);
+	v2ndc = get_ndc_coords_from_window_coords(win_x, win_y, v2w);
+	v3ndc = get_ndc_coords_from_window_coords(win_x, win_y, v3w);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	vector<GLfloat> fullscreen_vertex_data = {
+
+		// 3D position, 4D colour coordinate
+		v0ndc.real(), v0ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha, // vertex 0
+		v2ndc.real(), v2ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 2
+		v1ndc.real(), v1ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 1
+
+		v0ndc.real(), v0ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 0
+		v3ndc.real(), v3ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha,// vertex 3
+		v2ndc.real(), v2ndc.imag(), 0,   0.0f, 0.0f, 0.0f, alpha // vertex 2
+
+	};
+
+	GLuint components_per_vertex = 7;
+	GLuint components_per_position = 3;
+	GLuint components_per_colour = 4;
+	GLuint num_vertices = static_cast<GLuint>(fullscreen_vertex_data.size()) / components_per_vertex;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_handle);
+
+	glBufferData(GL_ARRAY_BUFFER, fullscreen_vertex_data.size() * sizeof(GLfloat), &fullscreen_vertex_data[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "position"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "position"),
+		components_per_position,
+		GL_FLOAT,
+		GL_FALSE,
+		components_per_vertex * sizeof(GLfloat),
+		NULL);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "colour"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "colour"),
+		components_per_colour,
+		GL_FLOAT,
+		GL_TRUE,
+		components_per_vertex * sizeof(GLfloat),
+		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+
+	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+
+	glLineWidth(4.0f);
+
+	vector<float> lines;
+	lines.push_back(v0ndc.real());
+	lines.push_back(v0ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v1ndc.real());
+	lines.push_back(v1ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v2ndc.real());
+	lines.push_back(v2ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	lines.push_back(v3ndc.real());
+	lines.push_back(v3ndc.imag());
+	lines.push_back(0);
+	lines.push_back(1);
+	lines.push_back(0);
+	lines.push_back(0);
+	lines.push_back(alpha);
+
+	components_per_vertex = 7;
+	components_per_position = 3;
+	components_per_colour = 4;
+
+	num_vertices = static_cast<GLuint>(lines.size()) / components_per_vertex;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_handle);
+
+	glBufferData(GL_ARRAY_BUFFER, lines.size() * sizeof(GLfloat), &lines[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "position"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "position"),
+		components_per_position,
+		GL_FLOAT,
+		GL_FALSE,
+		components_per_vertex * sizeof(GLfloat),
+		NULL);
+
+	glEnableVertexAttribArray(glGetAttribLocation(ortho_colour.get_program(), "colour"));
+	glVertexAttribPointer(glGetAttribLocation(ortho_colour.get_program(), "colour"),
+		components_per_colour,
+		GL_FLOAT,
+		GL_TRUE,
+		components_per_vertex * sizeof(GLfloat),
+		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+
+
+
+	glDrawArrays(GL_LINE_LOOP, 0, num_vertices);
+
+
+
+	glDeleteBuffers(1, &vbo_handle);
+
+
+
+
+
+	ortho.use_program();
+
+	RGB_uchar text_colour;
+
+	text_colour.r = 255;
+	text_colour.g = 255;
+	text_colour.b = 255;
+
+	for (size_t i = 0; i < mimgs.size(); i++)
+		mimgs[i].opengl_init(text_colour, alpha * 255.0f);
+
+	print_sentence(mimgs, ortho.get_program(), win_x, win_y, window_width / 2 - sentence_width / 2, window_height / 2, s);
+
+}
 
 
 
