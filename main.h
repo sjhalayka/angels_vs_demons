@@ -1713,33 +1713,27 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 
 	float t_demon = sqrtf(1.0f - U_demon * U_demon);
 
-	vertex_3 colour(1.0f, 1 - t_demon, 1 - t_angel);
+
 
 
 	vertex_3 red(1.0f, 0.0f, 0.0f);
 
-	vertex_3 pc(player_colour[0], player_colour[1], player_colour[2]);
-	vertex_3 ec(enemy_colour[0], enemy_colour[1], enemy_colour[2]);
+	if (classic_rendering)
+	{
+		vertex_3 colour(1.0f, 1 - t_demon, 1 - t_angel);
 
-	vertex_3 final_colour = lin_interp(red, pc, 1 - t_angel);
-	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
-
-	
-	if(classic_rendering)
 		return lin_interp(red, colour, 0.9f);
+	}
 	else
+	{
+		vertex_3 pc(player_colour[0], player_colour[1], player_colour[2]);
+		vertex_3 ec(enemy_colour[0], enemy_colour[1], enemy_colour[2]);
+
+		vertex_3 final_colour = lin_interp(red, pc, 1 - t_angel);
+		final_colour = lin_interp(final_colour, ec, 1 - t_demon);
+
 		return final_colour;
-
-
-	//float gray_level = final_colour.x + final_colour.y + final_colour.z;
-	//gray_level /= 3.0f;
-
-	//vertex_3 gray_colour(gray_level, gray_level, gray_level);
-
-	//return lin_interp(final_colour, gray_colour, 0.5f);
-
-
-
+	}
 }
 
 vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
@@ -1782,20 +1776,25 @@ vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
 
 	float t_demon = sqrtf(1.0f - U_demon * U_demon);
 
-	vertex_3 colour(1.0f, t_angel, t_demon);
 
 	vertex_3 white(1.0f, 1.0f, 1.0f);
 
-	vertex_3 pc(player_colour[0], player_colour[1], player_colour[2]);
-	vertex_3 ec(enemy_colour[0], enemy_colour[1], enemy_colour[2]);
-
-	vertex_3 final_colour = lin_interp(white, pc, 1 - t_angel);
-	final_colour = lin_interp(final_colour, ec, 1 - t_demon);
-
 	if (classic_rendering)
+	{
+		vertex_3 colour(1.0f, t_angel, t_demon);
+
 		return lin_interp(white, colour, 0.9f);
+	}
 	else
+	{
+		vertex_3 pc(player_colour[0], player_colour[1], player_colour[2]);
+		vertex_3 ec(enemy_colour[0], enemy_colour[1], enemy_colour[2]);
+
+		vertex_3 final_colour = lin_interp(white, pc, 1 - t_angel);
+		final_colour = lin_interp(final_colour, ec, 1 - t_demon);
+
 		return final_colour;
+	}
 }
 
 
@@ -4002,7 +4001,7 @@ void display_func(void)
 		ImGui::NewFrame();
 
 
-		if (false == classic_rendering)
+		if (1)//false == classic_rendering)
 		{
 			ImGui::SetNextWindowSize(ImVec2(400, 150));
 		}
