@@ -287,16 +287,16 @@ long long unsigned int arcdemon_fortress_max_hit_points = 200;
 
 float angel_max_mass = 0.01f;
 float arcangel_max_mass = 0.01f;
-float angel_boat_max_mass = 0.015f;
-float arcangel_boat_max_mass = 0.015f;
-float angel_fortress_max_mass = 0.02f;
-float arcangel_fortress_max_mass = 0.02f;
-float demon_max_mass = 0.01f;
-float arcdemon_max_mass = 0.01f;
-float demon_boat_max_mass = 0.015f;
-float arcdemon_boat_max_mass = 0.015f;
-float demon_fortress_max_mass = 0.02f;
-float arcdemon_fortress_max_mass = 0.02f;
+float angel_boat_max_mass = 0.025f;
+float arcangel_boat_max_mass = 0.025f;
+float angel_fortress_max_mass = 0.05f;
+float arcangel_fortress_max_mass = 0.05f;
+float demon_max_mass = angel_max_mass;
+float arcdemon_max_mass = arcangel_max_mass;
+float demon_boat_max_mass = angel_boat_max_mass;
+float arcdemon_boat_max_mass = arcangel_boat_max_mass;
+float demon_fortress_max_mass = angel_fortress_max_mass;
+float arcdemon_fortress_max_mass = arcangel_fortress_max_mass;
 
 #define min_f(a, b, c)  (fminf(a, fminf(b, c)))
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
