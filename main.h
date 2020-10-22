@@ -1312,97 +1312,97 @@ void game_idle_func(void)
 
 				if (b_type == demon && curr_level.bad_guy_fish_total >= demon_cost)
 				{
-					bad_guy a;
-					a.mass = demon_max_mass;
-					a.hit_points = a.max_hit_points = demon_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = demon_max_damage;
-					a.type = demon;
-					a.fish_rate = demon_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(demon_image);
+					bad_guy b;
+					b.mass = demon_max_mass;
+					b.hit_points = b.max_hit_points = demon_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = demon_max_damage;
+					b.type = demon;
+					b.fish_rate = demon_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(demon_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= demon_cost;
 				}
 				else if (b_type == arcdemon && curr_level.bad_guy_fish_total >= arcdemon_cost)
 				{
-					bad_guy a;
-					a.mass = arcdemon_max_mass;
-					a.hit_points = a.max_hit_points = arcdemon_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = arcdemon_max_damage;
-					a.type = arcdemon;
-					a.fish_rate = arcdemon_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(arcdemon_image);
+					bad_guy b;
+					b.mass = arcdemon_max_mass;
+					b.hit_points = b.max_hit_points = arcdemon_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = arcdemon_max_damage;
+					b.type = arcdemon;
+					b.fish_rate = arcdemon_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(arcdemon_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= arcdemon_cost;
 				}
 				else if (b_type == demon_boat && curr_level.bad_guy_fish_total >= demon_boat_cost)
 				{
-					bad_guy a;
-					a.mass = demon_boat_max_mass;
-					a.hit_points = a.max_hit_points = demon_boat_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = demon_boat_max_damage;
-					a.type = demon_boat;
-					a.fish_rate = demon_boat_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(demon_boat_image);
+					bad_guy b;
+					b.mass = demon_boat_max_mass;
+					b.hit_points = b.max_hit_points = demon_boat_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = demon_boat_max_damage;
+					b.type = demon_boat;
+					b.fish_rate = demon_boat_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(demon_boat_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= demon_boat_cost;
 				}
 				else if (b_type == arcdemon_boat && curr_level.bad_guy_fish_total >= arcdemon_boat_cost)
 				{
-					bad_guy a;
-					a.mass = arcdemon_boat_max_mass;
-					a.hit_points = a.max_hit_points = arcdemon_boat_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = arcdemon_boat_max_damage;
-					a.type = arcdemon_boat;
-					a.fish_rate = arcdemon_boat_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(arcdemon_boat_image);
+					bad_guy b;
+					b.mass = arcdemon_boat_max_mass;
+					b.hit_points = b.max_hit_points = arcdemon_boat_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = arcdemon_boat_max_damage;
+					b.type = arcdemon_boat;
+					b.fish_rate = arcdemon_boat_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(arcdemon_boat_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= arcdemon_boat_cost;
 				}
 				else if (b_type == demon_fortress && curr_level.bad_guy_fish_total >= demon_fortress_cost)
 				{
-					bad_guy a;
-					a.mass = demon_fortress_max_mass;
-					a.hit_points = a.max_hit_points = demon_fortress_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = demon_fortress_max_damage;
-					a.type = demon_fortress;
-					a.fish_rate = demon_fortress_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(demon_fortress_image);
+					bad_guy b;
+					b.mass = demon_fortress_max_mass;
+					b.hit_points = b.max_hit_points = demon_fortress_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = demon_fortress_max_damage;
+					b.type = demon_fortress;
+					b.fish_rate = demon_fortress_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(demon_fortress_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= demon_fortress_cost;
 				}
 				else if (b_type == arcdemon_fortress && curr_level.bad_guy_fish_total >= arcdemon_fortress_cost)
 				{
-					bad_guy a;
-					a.mass = arcdemon_fortress_max_mass;
-					a.hit_points = a.max_hit_points = arcdemon_fortress_max_hit_points;
-					a.untransformed_location = picked_location;
-					a.max_damage = arcdemon_fortress_max_damage;
-					a.type = arcdemon_fortress;
-					a.fish_rate = arcdemon_fortress_fish_rate;
-					a.start_time = std::chrono::high_resolution_clock::now();
-					a.opengl_init(arcdemon_fortress_image);
+					bad_guy b;
+					b.mass = arcdemon_fortress_max_mass;
+					b.hit_points = b.max_hit_points = arcdemon_fortress_max_hit_points;
+					b.untransformed_location = picked_location;
+					b.max_damage = arcdemon_fortress_max_damage;
+					b.type = arcdemon_fortress;
+					b.fish_rate = arcdemon_fortress_fish_rate;
+					b.start_time = std::chrono::high_resolution_clock::now();
+					b.opengl_init(arcdemon_fortress_image);
 
-					curr_level.demons.push_back(a);
+					curr_level.demons.push_back(b);
 
 					curr_level.bad_guy_fish_total -= arcdemon_fortress_cost;
 				}
