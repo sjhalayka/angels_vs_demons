@@ -31,11 +31,32 @@ int main(int argc, char** argv)
 					{
 						if (1 == do_quit_messagebox())
 							save_to_disk("levels/savegame.bin", curr_level);
+
+						quit = true;
+						break; // immediately stop polling for events
+					}
+					else
+					{
+						if (1 == do_quit_messagebox2())
+						{
+							quit = true;
+							break; // immediately stop polling for events
+						}
 					}
 				}
-
-				quit = true;
-				break; // immediately stop polling for events
+				else if(state == STATE_LEVEL_WIN || state == STATE_LEVEL_LOSE || state == STATE_GAME_END)
+				{
+					if (1 == do_quit_messagebox2())
+					{
+						quit = true;
+						break; // immediately stop polling for events
+					}
+				}
+				else
+				{
+					quit = true;
+					break; // immediately stop polling for events
+				}
 			}
 			else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) 
 			{

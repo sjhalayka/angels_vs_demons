@@ -200,18 +200,37 @@ BMP arcdemon_fortress_image;
 
 
 
-long long unsigned int angel_cost = 50;
-long long unsigned int arcangel_cost = 250;
-long long unsigned int angel_boat_cost = 500;
-long long unsigned int arcangel_boat_cost = 2500;
-long long unsigned int angel_fortress_cost = 5000;
-long long unsigned int arcangel_fortress_cost = 25000;
-long long unsigned int demon_cost = 50;
-long long unsigned int arcdemon_cost = 250;
-long long unsigned int demon_boat_cost = 500;
-long long unsigned int arcdemon_boat_cost = 2500;
-long long unsigned int demon_fortress_cost = 5000;
-long long unsigned int arcdemon_fortress_cost = 25000;
+
+long long unsigned int angel_cost = 25;
+long long unsigned int arcangel_cost = 50;
+long long unsigned int angel_boat_cost = 250;
+long long unsigned int arcangel_boat_cost = 500;
+long long unsigned int angel_fortress_cost = 2500;
+long long unsigned int arcangel_fortress_cost = 5000;
+long long unsigned int demon_cost = 25;
+long long unsigned int arcdemon_cost = 50;
+long long unsigned int demon_boat_cost = 250;
+long long unsigned int arcdemon_boat_cost = 500;
+long long unsigned int demon_fortress_cost = 2500;
+long long unsigned int arcdemon_fortress_cost = 5000;
+
+void disable_developer_mode(void)
+{
+	developer_mode = false;
+
+	angel_cost = 25;
+	arcangel_cost = 50;
+	angel_boat_cost = 250;
+	arcangel_boat_cost = 500;
+	angel_fortress_cost = 2500;
+	arcangel_fortress_cost = 5000;
+	demon_cost = 25;
+	arcdemon_cost = 50;
+	demon_boat_cost = 250;
+	arcdemon_boat_cost = 500;
+	demon_fortress_cost = 2500;
+	arcdemon_fortress_cost = 5000;
+}
 
 
 void enable_developer_mode(void)
@@ -232,80 +251,65 @@ void enable_developer_mode(void)
 	arcdemon_fortress_cost = 0;
 }
 
-void disable_developer_mode(void)
-{
-	developer_mode = false;
-
-	angel_cost = 50;
-	arcangel_cost = 250;
-	angel_boat_cost = 500;
-	arcangel_boat_cost = 2500;
-	angel_fortress_cost = 5000;
-	arcangel_fortress_cost = 25000;
-	demon_cost = 50;
-	arcdemon_cost = 250;
-	demon_boat_cost = 500;
-	arcdemon_boat_cost = 2500;
-	demon_fortress_cost = 5000;
-	arcdemon_fortress_cost = 25000;
-}
 
 
 
 
+const long long unsigned int angel_fish_rate = 1;
+const long long unsigned int arcangel_fish_rate = 2;
+const long long unsigned int angel_boat_fish_rate = 10;
+const long long unsigned int arcangel_boat_fish_rate = 20;
+const long long unsigned int angel_fortress_fish_rate = 100;
+const long long unsigned int arcangel_fortress_fish_rate = 200;
+const long long unsigned int demon_fish_rate = 1;
+const long long unsigned int arcdemon_fish_rate = 2;
+const long long unsigned int demon_boat_fish_rate = 10;
+const long long unsigned int arcdemon_boat_fish_rate = 20;
+const long long unsigned int demon_fortress_fish_rate = 100;
+const long long unsigned int arcdemon_fortress_fish_rate = 200;
 
-long long unsigned int angel_fish_rate = 1;
-long long unsigned int arcangel_fish_rate = 5;
-long long unsigned int angel_boat_fish_rate = 10;
-long long unsigned int arcangel_boat_fish_rate = 50;
-long long unsigned int angel_fortress_fish_rate = 100;
-long long unsigned int arcangel_fortress_fish_rate = 500;
-long long unsigned int demon_fish_rate = 1;
-long long unsigned int arcdemon_fish_rate = 5;
-long long unsigned int demon_boat_fish_rate = 10;
-long long unsigned int arcdemon_boat_fish_rate = 50;
-long long unsigned int demon_fortress_fish_rate = 100;
-long long unsigned int arcdemon_fortress_fish_rate = 500;
+const long long unsigned int angel_max_damage = 50;
+const long long unsigned int arcangel_max_damage = 50;
+const long long unsigned int angel_boat_max_damage = 50;
+const long long unsigned int arcangel_boat_max_damage = 50;
+const long long unsigned int angel_fortress_max_damage = 50;
+const long long unsigned int arcangel_fortress_max_damage = 50;
+const long long unsigned int demon_max_damage = 50;
+const long long unsigned int arcdemon_max_damage = 50;
+const long long unsigned int demon_boat_max_damage = 50;
+const long long unsigned int arcdemon_boat_max_damage = 50;
+const long long unsigned int demon_fortress_max_damage = 50;
+const long long unsigned int arcdemon_fortress_max_damage = 50;
 
-long long unsigned int angel_max_damage = 50;
-long long unsigned int arcangel_max_damage = 50;
-long long unsigned int angel_boat_max_damage = 50;
-long long unsigned int arcangel_boat_max_damage = 50;
-long long unsigned int angel_fortress_max_damage = 50;
-long long unsigned int arcangel_fortress_max_damage = 50;
-long long unsigned int demon_max_damage = 50;
-long long unsigned int arcdemon_max_damage = 50;
-long long unsigned int demon_boat_max_damage = 50;
-long long unsigned int arcdemon_boat_max_damage = 50;
-long long unsigned int demon_fortress_max_damage = 50;
-long long unsigned int arcdemon_fortress_max_damage = 50;
+const long long unsigned int angel_max_hit_points = 50;
+const long long unsigned int arcangel_max_hit_points = 50;
+const long long unsigned int angel_boat_max_hit_points = 100;
+const long long unsigned int arcangel_boat_max_hit_points = 100;
+const long long unsigned int angel_fortress_max_hit_points = 200;
+const long long unsigned int arcangel_fortress_max_hit_points = 200;
+const long long unsigned int demon_max_hit_points = 50;
+const long long unsigned int arcdemon_max_hit_points = 50;
+const long long unsigned int demon_boat_max_hit_points = 100;
+const long long unsigned int arcdemon_boat_max_hit_points = 100;
+const long long unsigned int demon_fortress_max_hit_points = 200;
+const long long unsigned int arcdemon_fortress_max_hit_points = 200;
 
-long long unsigned int angel_max_hit_points = 50;
-long long unsigned int arcangel_max_hit_points = 50;
-long long unsigned int angel_boat_max_hit_points = 100;
-long long unsigned int arcangel_boat_max_hit_points = 100;
-long long unsigned int angel_fortress_max_hit_points = 200;
-long long unsigned int arcangel_fortress_max_hit_points = 200;
-long long unsigned int demon_max_hit_points = 50;
-long long unsigned int arcdemon_max_hit_points = 50;
-long long unsigned int demon_boat_max_hit_points = 100;
-long long unsigned int arcdemon_boat_max_hit_points = 100;
-long long unsigned int demon_fortress_max_hit_points = 200;
-long long unsigned int arcdemon_fortress_max_hit_points = 200;
+const float angel_max_mass = 0.01f;
+const float arcangel_max_mass = 0.01f;
+const float angel_boat_max_mass = 0.02f;
+const float arcangel_boat_max_mass = 0.02f;
+const float angel_fortress_max_mass = 0.04f;
+const float arcangel_fortress_max_mass = 0.04f;
+const float demon_max_mass = angel_max_mass;
+const float arcdemon_max_mass = arcangel_max_mass;
+const float demon_boat_max_mass = angel_boat_max_mass;
+const float arcdemon_boat_max_mass = arcangel_boat_max_mass;
+const float demon_fortress_max_mass = angel_fortress_max_mass;
+const float arcdemon_fortress_max_mass = arcangel_fortress_max_mass;
 
-float angel_max_mass = 0.01f;
-float arcangel_max_mass = 0.01f;
-float angel_boat_max_mass = 0.02f;
-float arcangel_boat_max_mass = 0.02f;
-float angel_fortress_max_mass = 0.04f;
-float arcangel_fortress_max_mass = 0.04f;
-float demon_max_mass = angel_max_mass;
-float arcdemon_max_mass = arcangel_max_mass;
-float demon_boat_max_mass = angel_boat_max_mass;
-float arcdemon_boat_max_mass = arcangel_boat_max_mass;
-float demon_fortress_max_mass = angel_fortress_max_mass;
-float arcdemon_fortress_max_mass = arcangel_fortress_max_mass;
 
+
+/*
 #define min_f(a, b, c)  (fminf(a, fminf(b, c)))
 #define max_f(a, b, c)  (fmaxf(a, fmaxf(b, c)))
 
@@ -351,6 +355,8 @@ void rgb2hsv(const unsigned char& src_r, const unsigned char& src_g, const unsig
 	dst_s = (unsigned char)(s * 255); // dst_s : 0-255
 	dst_v = (unsigned char)(v * 255); // dst_v : 0-255
 }
+*/
+
 
 
 
@@ -4649,6 +4655,46 @@ int do_quit_messagebox(void)
 
 	return button_id;
 }
+
+int do_quit_messagebox2(void)
+{
+	const SDL_MessageBoxButtonData buttons[] = {
+{ /* .flags, .buttonid, .text */        0, 0, "No" },
+{ SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes" },
+	};
+	const SDL_MessageBoxColorScheme colorScheme = {
+		{ /* .colors (.r, .g, .b) */
+			/* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
+			{ 255,   0,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_TEXT] */
+			{   0, 255,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
+			{ 255, 255,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
+			{   0,   0, 255 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
+			{ 255,   0, 255 }
+		}
+	};
+
+	const SDL_MessageBoxData messageboxdata = {
+		SDL_MESSAGEBOX_INFORMATION, /* .flags */
+		gWindow, /* .window */
+		"?", /* .title */
+		"Are you sure that you want to quit? Your game has not been saved.", /* .message */
+		SDL_arraysize(buttons), /* .numbuttons */
+		buttons, /* .buttons */
+		&colorScheme /* .colorScheme */
+	};
+
+	int button_id = 0;
+
+	SDL_ShowMessageBox(&messageboxdata, &button_id);
+
+	return button_id;
+}
+
+
 
 
 
