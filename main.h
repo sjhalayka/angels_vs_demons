@@ -73,7 +73,8 @@ void show_win_banner(void);
 void show_lose_banner(void);
 
 
-
+float falloff_degree = 1.0f;
+float mass_multiplier = 1.0f;
 
 
 class level_data
@@ -387,7 +388,7 @@ int state = STATE_LITTLE_RED_SPLASH_SCREEN;
 void save_controls_to_disk(const char* const file_name)
 {
 	ofstream out(file_name);
-	out << global_volume << '\n' << difficulty << '\n' << classic_rendering << endl;
+	out << global_volume << '\n' << difficulty << '\n' << falloff_degree << '\n' << mass_multiplier << '\n' << classic_rendering << endl;
 
 	out << player_colour[0] << ' ' << player_colour[1] << ' ' << player_colour[2] << endl;
 	out << enemy_colour[0] << ' ' << enemy_colour[1] << ' ' << enemy_colour[2] << endl;
@@ -413,6 +414,16 @@ void get_controls_from_disk(const char* const file_name)
 	iss.clear();
 	iss.str(line);
 	iss >> difficulty;
+
+	getline(in, line);
+	iss.clear();
+	iss.str(line);
+	iss >> falloff_degree;
+
+	getline(in, line);
+	iss.clear();
+	iss.str(line);
+	iss >> mass_multiplier;
 
 	getline(in, line);
 	iss.clear();
@@ -1486,7 +1497,7 @@ void game_idle_func(void)
 				if (distance == 0)
 					distance = 0.0000001f;
 
-				U = add_vel(U, pow(j->mass / distance, 0.5f));
+				U = add_vel(U, pow(j->mass*mass_multiplier / pow(distance, falloff_degree), 0.5f));
 
 				avg_max_damage += j->max_damage;
 			}
@@ -1596,7 +1607,7 @@ void game_idle_func(void)
 				if (distance == 0)
 					distance = 0.0000001f;
 
-				U = add_vel(U, pow(j->mass / distance, 0.5f));
+				U = add_vel(U, pow(j->mass * mass_multiplier / pow(distance, falloff_degree), 0.5f));
 
 				avg_max_damage += j->max_damage;
 			}
@@ -1751,7 +1762,7 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 		if (distance == 0)
 			distance = 0.0000001f;
 
-		U_angel = add_vel(U_angel, pow(i->mass / distance, 0.5f));
+		U_angel = add_vel(U_angel, pow(i->mass * mass_multiplier / pow(distance, falloff_degree), 0.5f));
 	}
 
 	float t_angel = sqrtf(1.0f - U_angel * U_angel);
@@ -1770,7 +1781,7 @@ vertex_3 get_sea_colour_from_gravitation(vertex_3 v)
 		if (distance == 0)
 			distance = 0.0000001f;
 
-		U_demon = add_vel(U_demon, pow(i->mass / distance, 0.5f));
+		U_demon = add_vel(U_demon, pow(i->mass * mass_multiplier / pow(distance, falloff_degree), 0.5f));
 	}
 
 	float t_demon = sqrtf(1.0f - U_demon * U_demon);
@@ -1814,7 +1825,7 @@ vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
 		if (distance == 0)
 			distance = 0.0000001f;
 
-		U_angel = add_vel(U_angel, pow(i->mass / distance, 0.5f));
+		U_angel = add_vel(U_angel, pow(i->mass * mass_multiplier / pow(distance, falloff_degree), 0.5f));
 	}
 
 	float t_angel = sqrtf(1.0f - U_angel * U_angel);
@@ -1833,7 +1844,7 @@ vertex_3 get_land_colour_from_gravitation(const vertex_3& v)
 		if (distance == 0)
 			distance = 0.0000001f;
 
-		U_demon = add_vel(U_demon, pow(i->mass / distance, 0.5f));
+		U_demon = add_vel(U_demon, pow(i->mass * mass_multiplier / pow(distance, falloff_degree), 0.5f));
 	}
 
 	float t_demon = sqrtf(1.0f - U_demon * U_demon);
@@ -4081,22 +4092,16 @@ void display_func(void)
 		ImGui::NewFrame();
 
 
-		if (1)//false == classic_rendering)
-		{
-			ImGui::SetNextWindowSize(ImVec2(400, 150));
-		}
-		else
-		{
-			ImGui::SetNextWindowSize(ImVec2(400, 100));
-		}
-
-
+		ImGui::SetNextWindowSize(ImVec2(400, 200));
 
 		ImGui::SetNextWindowPos(ImVec2(float(win_x / 2 - 400 / 2), 10));
 
 		ImGui::Begin("Controls");
 		ImGui::SliderInt("Volume", &global_volume, 0, SDL_MIX_MAXVOLUME);
 		ImGui::SliderInt("Difficulty", &difficulty, 1, max_difficulty);
+		ImGui::SliderFloat("Falloff degree", &falloff_degree, 1.0f, 10.0f);
+		ImGui::SliderFloat("Mass multiplier", &mass_multiplier, 0.0f, 1.0f);
+
 		ImGui::Checkbox("Classic rendering", &classic_rendering);
 		
 		if (false == classic_rendering)
