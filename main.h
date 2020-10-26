@@ -2542,22 +2542,54 @@ void draw_game_objects(void)
 
 		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
 		
-		if (/*p.x <= -64 || p.x >= win_x || p.y <= -64 || */ p.y >= win_y )
+
+
+		if (p.y >= win_y)
 		{
-			arrow a;
-			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), static_cast<size_t>(win_x / 2 - 64 / 2), static_cast<size_t>(win_y), win_x, win_y);
-
-
 			//ostringstream oss_demon;
 
 			//oss_demon << p.x << " " << p.y << " " << win_x << " " << win_y << endl;
 
 			//SDL_ShowSimpleMessageBox(MB_OK, "test", oss_demon.str().c_str(), gWindow);
+
+			if (p.x <= -64)
+			{
+				arrow a;
+				a.opengl_init(arrow_down_left_image);
+				a.draw(ortho.get_program(), static_cast<size_t>(0), static_cast<size_t>(win_y), win_x, win_y);
+
+			}
+			else if (p.x >= win_x)
+			{
+				arrow a;
+				a.opengl_init(arrow_down_right_image);
+				a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y), win_x, win_y);
+			}
+			else
+			{
+				arrow a;
+				a.opengl_init(arrow_down_image);
+				a.draw(ortho.get_program(), static_cast<size_t>(win_x / 2 - 64 / 2), static_cast<size_t>(win_y), win_x, win_y);
+			}
 		}
-		else
+		else if (p.y >= 0)
 		{
-			i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
+			if (p.x <= -64)
+			{
+				arrow a;
+				a.opengl_init(arrow_left_image);
+				a.draw(ortho.get_program(), static_cast<size_t>(0), static_cast<size_t>(win_y / 2 - 64/2), win_x, win_y);
+			}
+			else if (p.x >= win_x)
+			{
+				arrow a;
+				a.opengl_init(arrow_right_image);
+				a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y / 2 - 64 / 2), win_x, win_y);
+			}
+			else
+			{
+				i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
+			}
 		}
 	}
 
