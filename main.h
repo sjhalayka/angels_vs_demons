@@ -4092,15 +4092,15 @@ void display_func(void)
 		ImGui::NewFrame();
 
 
-		ImGui::SetNextWindowSize(ImVec2(400, 200));
+		ImGui::SetNextWindowSize(ImVec2(520, 200));
 
-		ImGui::SetNextWindowPos(ImVec2(float(win_x / 2 - 400 / 2), 10));
+		ImGui::SetNextWindowPos(ImVec2(float(win_x / 2 - 520 / 2), 10));
 
 		ImGui::Begin("Controls");
 		ImGui::SliderInt("Volume", &global_volume, 0, SDL_MIX_MAXVOLUME);
 		ImGui::SliderInt("Difficulty", &difficulty, 1, max_difficulty);
-		ImGui::SliderFloat("Falloff degree", &falloff_degree, 1.0f, 10.0f);
-		ImGui::SliderFloat("Mass multiplier", &mass_multiplier, 0.0f, 1.0f);
+		ImGui::SliderFloat("Falloff degree constant", &falloff_degree, 1.0f, 10.0f);
+		ImGui::SliderFloat("Gravitational constant", &mass_multiplier, 0.0f, 1.0f);
 
 		ImGui::Checkbox("Classic rendering", &classic_rendering);
 		
