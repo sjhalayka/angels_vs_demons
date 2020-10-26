@@ -18,6 +18,7 @@
 #include "angel_demon.h"
 #include "soul.h"
 #include "text_snippet.h"
+#include "arrow.h"
 //#include "wave.h"
 #include "toolbar.h"
 #include "string_utilities.h"
@@ -175,6 +176,26 @@ BMP troops_texture_image;
 BMP boats_texture_image;
 BMP fortresses_texture_image;
 BMP soul_texture_image;
+
+BMP arrow_up_texture_image;
+BMP arrow_down_texture_image;
+BMP arrow_left_texture_image;
+BMP arrow_right_texture_image;
+BMP arrow_up_left_texture_image;
+BMP arrow_down_left_texture_image;
+BMP arrow_up_right_texture_image;
+BMP arrow_down_right_texture_image;
+
+BMP arrow_up_image;
+BMP arrow_down_image;
+BMP arrow_left_image;
+BMP arrow_right_image;
+BMP arrow_up_left_image;
+BMP arrow_down_left_image;
+BMP arrow_up_right_image;
+BMP arrow_down_right_image;
+
+
 //BMP wave_texture_image;
 
 BMP soul_image;
@@ -598,6 +619,57 @@ bool init()
 	//	return false;
 	//}
 
+	if (false == arrow_up_texture_image.load("media/arrow_up.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_up.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_down_texture_image.load("media/arrow_down.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_down.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_left_texture_image.load("media/arrow_left.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_left.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_right_texture_image.load("media/arrow_right.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_right.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_up_left_texture_image.load("media/arrow_up_left.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_up_left.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_up_right_texture_image.load("media/arrow_up_right.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_up_right.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_down_left_texture_image.load("media/arrow_down_left.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_down_left.bmp", gWindow);
+		return false;
+	}
+
+	if (false == arrow_down_right_texture_image.load("media/arrow_down_right.bmp", true))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load arrow_down_right.bmp", gWindow);
+		return false;
+	}
+
+
+
+
 	if (false == toolbar_image.load("media/toolbar.bmp", true))
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Error", "Could not load toolbar.bmp", gWindow);
@@ -660,6 +732,81 @@ bool init()
 	wave_image.height = tile_height;
 	wave_image.Pixels = tile_data[0];
 */
+
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_up_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_up_image.width = tile_width;
+	arrow_up_image.height = tile_height;
+	arrow_up_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_down_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_down_image.width = tile_width;
+	arrow_down_image.height = tile_height;
+	arrow_down_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_left_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_left_image.width = tile_width;
+	arrow_left_image.height = tile_height;
+	arrow_left_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_right_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_right_image.width = tile_width;
+	arrow_right_image.height = tile_height;
+	arrow_right_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_up_left_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_up_left_image.width = tile_width;
+	arrow_up_left_image.height = tile_height;
+	arrow_up_left_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_up_right_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_up_right_image.width = tile_width;
+	arrow_up_right_image.height = tile_height;
+	arrow_up_right_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_down_left_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_down_left_image.width = tile_width;
+	arrow_down_left_image.height = tile_height;
+	arrow_down_left_image.Pixels = tile_data[0];
+
+	tile_width = 64;
+	tile_height = 64;
+
+	slice_tiles(arrow_down_right_texture_image, tile_data, 1, 64, 64, tile_width, tile_height);
+
+	arrow_down_right_image.width = tile_width;
+	arrow_down_right_image.height = tile_height;
+	arrow_down_right_image.Pixels = tile_data[0];
+
+
 
 
 
@@ -2395,16 +2542,23 @@ void draw_game_objects(void)
 
 		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
 		
-		//if (p.x <= -64 || p.x >= win_x || p.y <= -64 || p.y >= win_y)
-		//{
-		//	ostringstream oss_demon;
+		if (/*p.x <= -64 || p.x >= win_x || p.y <= -64 || */ p.y >= win_y )
+		{
+			arrow a;
+			a.opengl_init(arrow_down_image);
+			a.draw(ortho.get_program(), static_cast<size_t>(win_x / 2 - 64 / 2), static_cast<size_t>(win_y), win_x, win_y);
 
-		//	oss_demon << p.x << " " << p.y << " " << win_x << " " << win_y << endl;
 
-		//	SDL_ShowSimpleMessageBox(MB_OK, "test", oss_demon.str().c_str(), gWindow);
-		//}
+			//ostringstream oss_demon;
 
-		i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
+			//oss_demon << p.x << " " << p.y << " " << win_x << " " << win_y << endl;
+
+			//SDL_ShowSimpleMessageBox(MB_OK, "test", oss_demon.str().c_str(), gWindow);
+		}
+		else
+		{
+			i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
+		}
 	}
 
 
@@ -3870,7 +4024,6 @@ void display_func(void)
 	}
 	else if (state == STATE_PAUSE_SCREEN)
 	{
-
 
 
 		ortho_colour.use_program();
