@@ -2550,6 +2550,17 @@ void draw_game_objects(void)
 
 		GLint y_viewport_pos = 0;
 
+		const bool centre_arrows = true;
+
+		GLint x_pos = static_cast<GLint>(p.x);
+		GLint y_pos = static_cast<GLint>(p.y);
+
+		if (true == centre_arrows)
+		{
+			x_pos = win_x / 2 - 64 / 2;
+			y_pos = win_y / 2 - 64 / 2;
+		}
+
 		if (p.y < 0)
 			y_viewport_pos = ABOVE_VIEWPORT;
 		else if (p.y < win_y)
@@ -2583,20 +2594,20 @@ void draw_game_objects(void)
 		{
 			arrow a;
 			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), win_x / 2 - 64/2, win_y, win_x, win_y);
+			a.draw(ortho.get_program(), static_cast<GLint>(x_pos), win_y, win_x, win_y);
 		}
 
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
 			arrow a;
 			a.opengl_init(arrow_left_image);
-			a.draw(ortho.get_program(), 0, win_y / 2 - 64 / 2, win_x, win_y);
+			a.draw(ortho.get_program(), 0, static_cast<GLint>(y_pos), win_x, win_y);
 		}
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == RIGHT_OF_VIEWPORT)
 		{
 			arrow a;
 			a.opengl_init(arrow_right_image);
-			a.draw(ortho.get_program(), win_x - 64, win_y / 2 - 64/2, win_x, win_y);
+			a.draw(ortho.get_program(), win_x - 64, static_cast<GLint>(y_pos), win_x, win_y);
 		}
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
 		{
