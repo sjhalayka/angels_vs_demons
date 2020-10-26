@@ -65,7 +65,7 @@ public:
 	}
 
 
-	void draw(GLuint shader_program, size_t x, size_t y, size_t win_width, size_t win_height)
+	void draw(GLuint shader_program, GLint x, GLint y, GLint win_width, GLint win_height)
 	{
 		y = win_height - y;
 

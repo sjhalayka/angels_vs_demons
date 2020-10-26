@@ -52,6 +52,12 @@ using namespace std;
 #pragma comment(lib, "OpenGL32.lib")
 
 
+#define ABOVE_VIEWPORT 0
+#define IN_VIEWPORT 1
+#define BELOW_VIEWPORT 2
+#define LEFT_OF_VIEWPORT 3
+#define RIGHT_OF_VIEWPORT 4
+
 
 
 
@@ -2541,48 +2547,62 @@ void draw_game_objects(void)
 		transform(transformed_vertex);
 
 		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
-		
-		if (p.y >= win_y)
-		{
-			if (p.x <= -64)
-			{
-				arrow a;
-				a.opengl_init(arrow_down_left_image);
-				a.draw(ortho.get_program(), static_cast<size_t>(0), static_cast<size_t>(win_y), win_x, win_y);
-			}
-			else if (p.x >= win_x)
-			{
-				arrow a;
-				a.opengl_init(arrow_down_right_image);
-				a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y), win_x, win_y);
-			}
-		}
-		else if (p.y >= 0)
-		{
-			if (p.x <= -64)
-			{
-				arrow a;
-				a.opengl_init(arrow_left_image);
-				a.draw(ortho.get_program(), static_cast<size_t>(0), static_cast<size_t>(win_y / 2 - 64/2), win_x, win_y);
-			}
-			else if (p.x >= win_x)
-			{
-				arrow a;
-				a.opengl_init(arrow_right_image);
-				a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y / 2 - 64 / 2), win_x, win_y);
 
-			}
-			else
-			{
-				i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
-			}
-		}
+		GLint y_viewport_pos = 0;
+
+		if (p.y < 0)
+			y_viewport_pos = ABOVE_VIEWPORT;
+		else if (p.y < win_y)
+			y_viewport_pos = IN_VIEWPORT;
 		else
+			y_viewport_pos = BELOW_VIEWPORT;
+
+		GLint x_viewport_pos = 0;
+
+		if (p.x < 0)
+			x_viewport_pos = LEFT_OF_VIEWPORT;
+		else if (p.x < win_x)
+			x_viewport_pos = IN_VIEWPORT;
+		else
+			x_viewport_pos = RIGHT_OF_VIEWPORT;
+
+
+		if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
+		{
+			arrow a;
+			a.opengl_init(arrow_down_left_image);
+			a.draw(ortho.get_program(), static_cast<size_t>(0), static_cast<size_t>(win_y), win_x, win_y);
+		}
+		else if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == RIGHT_OF_VIEWPORT)
+		{
+			arrow a;
+			a.opengl_init(arrow_down_right_image);
+			a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y), win_x, win_y);
+		}
+		else if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
 		{
 			arrow a;
 			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), static_cast<size_t>(win_x / 2 - 64/2), static_cast<size_t>(win_y), win_x, win_y);
+			a.draw(ortho.get_program(), win_x / 2 - 64/2, win_y, win_x, win_y);
 		}
+
+		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
+		{
+			arrow a;
+			a.opengl_init(arrow_left_image);
+			a.draw(ortho.get_program(), 0, win_y / 2 - 64 / 2, win_x, win_y);
+		}
+		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == RIGHT_OF_VIEWPORT)
+		{
+			arrow a;
+			a.opengl_init(arrow_right_image);
+			a.draw(ortho.get_program(), win_x - 64, win_y / 2 - 64/2, win_x, win_y);
+		}
+		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
+		{
+			i->draw(ortho.get_program(), static_cast<GLint>(p.x), static_cast<GLint>(p.y), win_x, win_y);
+		}
+
 	}
 
 
