@@ -2548,18 +2548,7 @@ void draw_game_objects(void)
 
 		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
 
-		GLint y_viewport_pos = 0;
-
-		const bool centre_arrows = true;
-
-		GLint x_pos = static_cast<GLint>(p.x);
-		GLint y_pos = static_cast<GLint>(p.y);
-
-		if (true == centre_arrows)
-		{
-			x_pos = win_x / 2 - 64 / 2;
-			y_pos = win_y / 2 - 64 / 2;
-		}
+		GLint y_viewport_pos = -1;
 
 		if (p.y < 0)
 			y_viewport_pos = ABOVE_VIEWPORT;
@@ -2568,7 +2557,7 @@ void draw_game_objects(void)
 		else
 			y_viewport_pos = BELOW_VIEWPORT;
 
-		GLint x_viewport_pos = 0;
+		GLint x_viewport_pos = -1;
 
 		if (p.x < 0)
 			x_viewport_pos = LEFT_OF_VIEWPORT;
@@ -2576,7 +2565,6 @@ void draw_game_objects(void)
 			x_viewport_pos = IN_VIEWPORT;
 		else
 			x_viewport_pos = RIGHT_OF_VIEWPORT;
-
 
 		if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
@@ -2592,26 +2580,33 @@ void draw_game_objects(void)
 		}
 		else if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
 		{
+			SDL_ShowSimpleMessageBox(MB_OK, "Test", "test", gWindow);
 			arrow a;
 			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), static_cast<GLint>(x_pos), win_y, win_x, win_y);
+			a.draw(ortho.get_program(), win_x / 2 - 64/2, win_y, win_x, win_y);
 		}
 
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
 			arrow a;
 			a.opengl_init(arrow_left_image);
-			a.draw(ortho.get_program(), 0, static_cast<GLint>(y_pos), win_x, win_y);
+			a.draw(ortho.get_program(), 0, win_y / 2 - 64 / 2, win_x, win_y);
 		}
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == RIGHT_OF_VIEWPORT)
 		{
 			arrow a;
 			a.opengl_init(arrow_right_image);
-			a.draw(ortho.get_program(), win_x - 64, static_cast<GLint>(y_pos), win_x, win_y);
+			a.draw(ortho.get_program(), win_x - 64, win_y / 2 - 64/2, win_x, win_y);
 		}
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
 		{
 			i->draw(ortho.get_program(), static_cast<GLint>(p.x), static_cast<GLint>(p.y), win_x, win_y);
+		}
+		else
+		{
+			arrow a;
+			a.opengl_init(arrow_down_image);
+			a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
 		}
 
 	}
