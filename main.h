@@ -3865,6 +3865,8 @@ void display_func(void)
 
 		//	glVertex3f(v.x, v.y, v.z);
 		//}
+
+		//glEnd();
 	}
 	else if (state == STATE_PAUSE_SCREEN)
 	{
