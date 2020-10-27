@@ -156,6 +156,9 @@ bool good_guy_mode = true;
 good_type g_type = angel_none;
 bad_type b_type = demon_none;
 
+
+float projection_mat[16];
+float modelview_mat[16];
 float projection_modelview_mat[16];
 
 float z_angle = 0;
@@ -2083,7 +2086,9 @@ void draw_game_objects(void)
 		camera_pos.x, camera_pos.y, camera_pos.z, // Camera position.
 		look_at_pos.x, look_at_pos.y, look_at_pos.z, // Look at position.
 		up.x, up.y, up.z, // Up direction vector.
-		projection_modelview_mat);
+		projection_modelview_mat,
+		projection_mat,
+		modelview_mat);
 
 	glUniformMatrix4fv(glGetUniformLocation(perspective.get_program(), "mvp_matrix"), 1, GL_FALSE, &projection_modelview_mat[0]);
 
@@ -2517,7 +2522,7 @@ void draw_game_objects(void)
 			i = souls.erase(i);
 		else
 		{
-			vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
+			vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_mat, modelview_mat, win_x, win_y);
 			i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
 
 			i++;
@@ -2535,7 +2540,7 @@ void draw_game_objects(void)
 		vertex_3 transformed_vertex = i->untransformed_location;
 		transform(transformed_vertex);
 
-		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
+		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_mat, modelview_mat, win_x, win_y);
 
 		i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
 	}
@@ -2546,7 +2551,7 @@ void draw_game_objects(void)
 		vertex_3 transformed_vertex = i->untransformed_location;
 		transform(transformed_vertex);
 
-		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
+		vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_mat, modelview_mat, win_x, win_y);
 
 		GLint y_viewport_pos = -1;
 
@@ -2566,6 +2571,15 @@ void draw_game_objects(void)
 		else
 			x_viewport_pos = RIGHT_OF_VIEWPORT;
 
+
+		vertex_3 v1 = camera_pos - look_at_pos;
+		vertex_3 v2 = camera_pos - transformed_vertex;
+
+		bool behind_camera = false;
+
+		if (v1.dot(v2) <= 0)
+			behind_camera = true;
+
 		if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
 			arrow a;
@@ -2578,14 +2592,6 @@ void draw_game_objects(void)
 			a.opengl_init(arrow_down_right_image);
 			a.draw(ortho.get_program(), static_cast<size_t>(win_x - 64), static_cast<size_t>(win_y), win_x, win_y);
 		}
-		else if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
-		{
-			SDL_ShowSimpleMessageBox(MB_OK, "Test", "test", gWindow);
-			arrow a;
-			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), win_x / 2 - 64/2, win_y, win_x, win_y);
-		}
-
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
 			arrow a;
@@ -2602,11 +2608,20 @@ void draw_game_objects(void)
 		{
 			i->draw(ortho.get_program(), static_cast<GLint>(p.x), static_cast<GLint>(p.y), win_x, win_y);
 		}
-		else
+		else // all that's left is above and below viewport, where x location is in viewport
 		{
-			arrow a;
-			a.opengl_init(arrow_down_image);
-			a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
+			if (behind_camera)
+			{
+				arrow a;
+				a.opengl_init(arrow_down_image);
+				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
+			}
+			//else
+			//{
+			//	arrow a;
+			//	a.opengl_init(arrow_up_image);
+			//	a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
+			//}
 		}
 
 	}
@@ -2816,7 +2831,7 @@ void draw_game_objects(void)
 			i = text_snippets.erase(i);
 		else
 		{
-			vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_modelview_mat, win_x, win_y);
+			vertex_3 p = get_screen_coords_from_world_coords(transformed_vertex, camera_pos, projection_mat, modelview_mat, win_x, win_y);
 			i->draw(ortho.get_program(), static_cast<size_t>(p.x), static_cast<size_t>(p.y), win_x, win_y);
 
 			i++;

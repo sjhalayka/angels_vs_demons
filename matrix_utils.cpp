@@ -100,7 +100,7 @@ void multiply_4x4_matrix_by_4_vector(const float(&in_a)[16], const float(&in_b)[
         out[i] = temp[i];
 }
 
-void multiply_4x4_matrices(float (&in_a)[16], float (&in_b)[16], float (&out)[16])
+void multiply_4x4_matrices(const float (&in_a)[16], const float (&in_b)[16], float (&out)[16])
 {
     /*
     matrix layout:
@@ -147,14 +147,17 @@ void multiply_4x4_matrices(float (&in_a)[16], float (&in_b)[16], float (&out)[16
 
 
 void init_perspective_camera(float fovy, float aspect, float znear, float zfar,
-                             float eyex, float eyey, float eyez, float centrex, float centrey,
-                             float centrez, float upx, float upy, float upz,
-                             float (&projection_modelview_mat)[16])
+    float eyex, float eyey, float eyez,
+    float centrex, float centrey, float centrez,
+    float upx, float upy, float upz,
+    float(&projection_modelview_mat)[16],
+    float(&projection_mat)[16],
+    float(&modelview_mat)[16])
 {
-    float projection_mat[16];
+ //   float projection_mat[16];
     get_perspective_matrix(fovy, aspect, znear, zfar, projection_mat);
     
-    float modelview_mat[16];
+ //   float modelview_mat[16];
     get_look_at_matrix(eyex, eyey, eyez, // Eye position.
                        centrex, centrey, centrez, // Look at position (not direction).
                        upx, upy, upz,  // Up direction vector.
@@ -163,7 +166,12 @@ void init_perspective_camera(float fovy, float aspect, float znear, float zfar,
     multiply_4x4_matrices(projection_mat, modelview_mat, projection_modelview_mat);
 }
 
-vertex_3 get_screen_coords_from_world_coords(const vertex_3 p, const vertex_3 c, const float(&mat)[16], const int width, const int height)
+vertex_3 get_screen_coords_from_world_coords(const vertex_3 p,
+    const vertex_3 c,
+    const float(&projection_mat)[16],
+    const float(&modelview_mat)[16],
+    const int width,
+    const int height)
 {
     vertex_3 v = p - c;
     v.x /= v.z;
@@ -176,12 +184,26 @@ vertex_3 get_screen_coords_from_world_coords(const vertex_3 p, const vertex_3 c,
     point[2] = c.z + v.z;
     point[3] = 0;
 
-    float out[4];
+    float out0[4];
+    float out1[4];
 
-    multiply_4x4_matrix_by_4_vector(mat, point, out);
+    //multiply_4x4_matrix_by_4_vector(projection_mat, point, out0);
+    //multiply_4x4_matrix_by_4_vector(modelview_mat, out0, out1);
 
-    return  vertex_3(round(((1.0f + out[0]) * 0.5f) * (float)width),
-        round(((1.0f - out[1]) * 0.5f) * (float)height), 0.0f);
+    multiply_4x4_matrix_by_4_vector(modelview_mat, point, out0);
+    multiply_4x4_matrix_by_4_vector(projection_mat, out0, out1);
+
+ //   float mat[16]; 
+ //   multiply_4x4_matrices(projection_mat, modelview_mat, mat);
+ //   multiply_4x4_matrix_by_4_vector(mat, point, out);
+
+
+
+
+    return  vertex_3(
+        round(((1.0f + out1[0]) * 0.5f) * (float)width),
+        round(((1.0f - out1[1]) * 0.5f) * (float)height), 
+        0.0f);
 }
 
 float lin_interp(float v0, float v1, float t)
