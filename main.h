@@ -4359,12 +4359,12 @@ void game_handle_left_mouse_click(int x, int y)
 
 		if (x < spacer + 64)
 		{
-			z_angle -= pi / 32;
+			z_angle -= pi / 16;
 			g_type = angel_none;
 		}
 		else if (x < spacer + 64 * 2)
 		{
-			z_angle += pi / 32;
+			z_angle += pi / 16;
 			g_type = angel_none;
 		}
 		else if (x < spacer + 64 * 3)
