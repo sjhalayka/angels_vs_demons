@@ -123,8 +123,8 @@ vertex_3 background_colour(1.0f, 0.5, 0.0f);
 
 unsigned int buffer_handle;
 
-vertex_3 camera_pos(0, 0, -1); // Camera position.
-vertex_3 look_at_pos(0, 0, 0); // Look at position.
+const vertex_3 camera_pos(0, 0, -1); // Camera position.
+const vertex_3 look_at_pos(0, 0, 0); // Look at position.
 
 float click_x = 0;
 float click_y = 0;
