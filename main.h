@@ -2617,12 +2617,12 @@ void draw_game_objects(void)
 				a.opengl_init(arrow_down_image);
 				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
 			}
-			//else
-			//{
-			//	arrow a;
-			//	a.opengl_init(arrow_up_image);
-			//	a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
-			//}
+			else
+			{
+				arrow a;
+				a.opengl_init(arrow_up_image);
+				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, tb.height + 64 , win_x, win_y);
+			}
 		}
 
 	}
