@@ -2580,6 +2580,7 @@ void draw_game_objects(void)
 		if (v1.dot(v2) <= 0)
 			behind_camera = true;
 
+
 		if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
 		{
 			arrow a;
@@ -2611,6 +2612,7 @@ void draw_game_objects(void)
 
 			i->draw(ortho.get_program(), px, py, win_x, win_y);
 
+			// Draw arrow if game piece is obscured by the toolbar
 			GLint spacer = win_x / 2 - static_cast<GLint>(tb.width) / 2;
 
 			if (px >= spacer && px <= (spacer + tb.width) && py <= tb.height)
@@ -2620,16 +2622,15 @@ void draw_game_objects(void)
 				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, static_cast<GLint>(tb.height) + 64, win_x, win_y);
 			}
 		}
-		else // all that remains is above-in and below-in viewport, where the x location is in viewport
-			// this assumes that above-left and above-right cases are not possible
+		else // all that remains is above and below viewport, where the x location is in viewport
 		{
-			if (behind_camera)
+			if (behind_camera) // below viewport
 			{
 				arrow a;
 				a.opengl_init(arrow_down_image);
 				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
 			}
-			else
+			else // above viewport
 			{
 				arrow a;
 				a.opengl_init(arrow_up_image);
