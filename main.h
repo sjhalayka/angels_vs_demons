@@ -2634,6 +2634,7 @@ void draw_game_objects(void)
 		}
 		else
 		{
+			// handle special cases
 			if (behind_camera) // below viewport
 			{
 				arrow a;
