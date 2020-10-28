@@ -2608,8 +2608,8 @@ void draw_game_objects(void)
 		{
 			i->draw(ortho.get_program(), static_cast<GLint>(p.x), static_cast<GLint>(p.y), win_x, win_y);
 		}
-		else // all that's left is above and below viewport, where x location is in viewport
-			// this assumes that upper-left and upper-right cases are not possible
+		else // all that remains is above-in and below-in viewport, where the x location is in viewport
+			// this assumes that above-left and above-right cases are not possible
 		{
 			if (behind_camera)
 			{
