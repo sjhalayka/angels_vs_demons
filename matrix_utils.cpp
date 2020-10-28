@@ -174,9 +174,13 @@ vertex_3 get_screen_coords_from_world_coords(const vertex_3 p,
     const int height)
 {
     vertex_3 v = p - c;
-    v.x /= v.z;
-    v.y /= v.z;
-    v.z /= v.z;
+
+    if (v.z != 0)
+    {
+        v.x /= v.z;
+        v.y /= v.z;
+        v.z /= v.z;
+    }
 
     float point[4];
     point[0] = c.x + v.x;
