@@ -2575,10 +2575,14 @@ void draw_game_objects(void)
 		vertex_3 v1 = camera_pos - look_at_pos;
 		vertex_3 v2 = camera_pos - transformed_vertex;
 
+		v1.normalize();
+		v2.normalize();
+
 		bool behind_camera = false;
 
 		if (v1.dot(v2) <= 0)
 			behind_camera = true;
+
 
 
 		if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == LEFT_OF_VIEWPORT)
@@ -2622,7 +2626,13 @@ void draw_game_objects(void)
 				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, static_cast<GLint>(tb.height) + 64, win_x, win_y);
 			}
 		}
-		else // all that remains is above and below viewport, where the x location is in viewport
+		else if (y_viewport_pos == BELOW_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
+		{
+			arrow a;
+			a.opengl_init(arrow_down_image);
+			a.draw(ortho.get_program(), win_x / 2 - 64 / 2, win_y, win_x, win_y);
+		}
+		else
 		{
 			if (behind_camera) // below viewport
 			{
