@@ -2606,7 +2606,19 @@ void draw_game_objects(void)
 		}
 		else if (y_viewport_pos == IN_VIEWPORT && x_viewport_pos == IN_VIEWPORT)
 		{
-			i->draw(ortho.get_program(), static_cast<GLint>(p.x), static_cast<GLint>(p.y), win_x, win_y);
+			GLint px = static_cast<GLint>(p.x);
+			GLint py = static_cast<GLint>(p.y);
+
+			i->draw(ortho.get_program(), px, py, win_x, win_y);
+
+			GLint spacer = win_x / 2 - static_cast<GLint>(tb.width) / 2;
+
+			if (px >= spacer && px <= (spacer + tb.width) && py <= tb.height)
+			{
+				arrow a;
+				a.opengl_init(arrow_up_image);
+				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, static_cast<GLint>(tb.height) + 64, win_x, win_y);
+			}
 		}
 		else // all that remains is above-in and below-in viewport, where the x location is in viewport
 			// this assumes that above-left and above-right cases are not possible
@@ -2621,10 +2633,9 @@ void draw_game_objects(void)
 			{
 				arrow a;
 				a.opengl_init(arrow_up_image);
-				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, tb.height + 64 , win_x, win_y);
+				a.draw(ortho.get_program(), win_x / 2 - 64 / 2, static_cast<GLint>(tb.height) + 64 , win_x, win_y);
 			}
 		}
-
 	}
 
 
