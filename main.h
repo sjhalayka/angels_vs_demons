@@ -2130,7 +2130,7 @@ void draw_game_objects(void)
 	}
 
 
-	//vector<float> sea_triangle_red_data;
+	vector<float> sea_triangle_red_data;
 
 	for (size_t i = 0; i < sea_triangles.size(); i++)
 	{
@@ -2175,26 +2175,26 @@ void draw_game_objects(void)
 
 
 
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].x);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].y);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].z);
-		//sea_triangle_red_data.push_back(1.0f);
-		//sea_triangle_red_data.push_back(0.0f);
-		//sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].x);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].y);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[0].z);
+		sea_triangle_red_data.push_back(1.0f);
+		sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(0.0f);
 
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].x);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].y);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].z);
-		//sea_triangle_red_data.push_back(1.0f);
-		//sea_triangle_red_data.push_back(0.0f);
-		//sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].x);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].y);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[1].z);
+		sea_triangle_red_data.push_back(1.0f);
+		sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(0.0f);
 
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].x);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].y);
-		//sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].z);
-		//sea_triangle_red_data.push_back(1.0f);
-		//sea_triangle_red_data.push_back(0.0f);
-		//sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].x);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].y);
+		sea_triangle_red_data.push_back(sea_triangles[i].vertex[2].z);
+		sea_triangle_red_data.push_back(1.0f);
+		sea_triangle_red_data.push_back(0.0f);
+		sea_triangle_red_data.push_back(0.0f);
 
 
 	}
@@ -2232,6 +2232,10 @@ void draw_game_objects(void)
 		}
 	}
 
+	vector<float> land_triangle_white_data;
+
+
+
 	for (size_t i = 0; i < land_triangles.size(); i++)
 	{
 		map<vertex_3, vertex_3>::const_iterator find_iter;
@@ -2262,6 +2266,30 @@ void draw_game_objects(void)
 		land_triangle_data.push_back(find_iter->second.x);
 		land_triangle_data.push_back(find_iter->second.y);
 		land_triangle_data.push_back(find_iter->second.z);
+
+
+
+		land_triangle_white_data.push_back(land_triangles[i].vertex[0].x);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[0].y);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[0].z);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+
+		land_triangle_white_data.push_back(land_triangles[i].vertex[1].x);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[1].y);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[1].z);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+
+		land_triangle_white_data.push_back(land_triangles[i].vertex[2].x);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[2].y);
+		land_triangle_white_data.push_back(land_triangles[i].vertex[2].z);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+		land_triangle_white_data.push_back(1.0f);
+
 	}
 
 	vertex_3 colour;
@@ -2365,64 +2393,67 @@ void draw_game_objects(void)
 
 
 
-	//
-	//
-	//	glDeleteBuffers(1, &buffer_handle);
-	//	glGenBuffers(1, &buffer_handle);
-	//
-	//	components_per_vertex = 6;
-	//	components_per_position = 3;
-	//	components_per_colour = 3;
-	//
-	//	num_vertices = static_cast<GLuint>(sea_triangle_red_data.size()) / components_per_vertex;
-	//
-	//	glBindBuffer(GL_ARRAY_BUFFER, buffer_handle);
-	//
-	//	glBufferData(GL_ARRAY_BUFFER, sea_triangle_red_data.size() * sizeof(GLfloat), &sea_triangle_red_data[0], GL_STATIC_DRAW);
-	//
-	//	glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "position"));
-	//	glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "position"),
-	//		components_per_position,
-	//		GL_FLOAT,
-	//		GL_FALSE,
-	//		components_per_vertex * sizeof(GLfloat),
-	//		NULL);
-	//
-	//	glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "colour"));
-	//	glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "colour"),
-	//		components_per_colour,
-	//		GL_FLOAT,
-	//		GL_TRUE,
-	//		components_per_vertex * sizeof(GLfloat),
-	//		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
-	//
-	//
-	//
-	//	glEnable(GL_POLYGON_STIPPLE);
-	//
-	//	GLubyte halftone[] = {
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-	//0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55 };
-	//
-	//	glPolygonStipple(halftone);
-	//
-	//
-	//	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
-	//	glDisable(GL_POLYGON_STIPPLE);
+
+
+
+
+	
+	
+		glDeleteBuffers(1, &buffer_handle);
+		glGenBuffers(1, &buffer_handle);
+	
+		components_per_vertex = 6;
+		components_per_position = 3;
+		components_per_colour = 3;
+	
+		num_vertices = static_cast<GLuint>(sea_triangle_red_data.size()) / components_per_vertex;
+	
+		glBindBuffer(GL_ARRAY_BUFFER, buffer_handle);
+	
+		glBufferData(GL_ARRAY_BUFFER, sea_triangle_red_data.size() * sizeof(GLfloat), &sea_triangle_red_data[0], GL_STATIC_DRAW);
+	
+		glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "position"));
+		glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "position"),
+			components_per_position,
+			GL_FLOAT,
+			GL_FALSE,
+			components_per_vertex * sizeof(GLfloat),
+			NULL);
+	
+		glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "colour"));
+		glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "colour"),
+			components_per_colour,
+			GL_FLOAT,
+			GL_TRUE,
+			components_per_vertex * sizeof(GLfloat),
+			(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+	
+	
+		// http://cse.csusb.edu/tongyu/courses/cs420/notes/drawing.php
+
+	//http://glasnost.itcarlow.ie/~powerk/technology/opengl/TransparencyBlending.html
+
+		glEnable(GL_POLYGON_STIPPLE);
+
+
+		GLubyte red_stipple_pattern[] = {
+			0x0,0x1f,0xfc,0x0,0x0,0x7f,0xfe,0x0,0x1,0xfe,0x7f,0x80,0x3,0xe0,0x3,0xc0,0xf,0x80,0x1,0xf0,0xe,0x0,0x0,0x70,0x1c,0x0,0x0,0x3c,0x3c,0x0,0x0,0x1c,0x3c,0x0,0x0,0x1c,0x70,0x0,0x0,0xe,0x70,0x0,0x0,0xe,0xe0,0x0,0x0,0x3,0xe0,0x0,0x0,0x3,0xe0,0x0,0x0,0x3,0xe0,0x0,0x0,0x3,0xc0,0x0,0x0,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0
+		};
+
+	
+		glPolygonStipple(red_stipple_pattern);
+	
+	
+		glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+		glDisable(GL_POLYGON_STIPPLE);
+
+
+
+
+
+
+
+
 
 
 	glDisable(GL_DEPTH_TEST);
@@ -2456,14 +2487,56 @@ void draw_game_objects(void)
 		components_per_vertex * sizeof(GLfloat),
 		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
 
-
-
-
-
 	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
 
 
 
+
+	glDeleteBuffers(1, &buffer_handle);
+	glGenBuffers(1, &buffer_handle);
+
+	components_per_vertex = 6;
+	components_per_position = 3;
+	components_per_colour = 3;
+
+	num_vertices = static_cast<GLuint>(land_triangle_white_data.size()) / components_per_vertex;
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffer_handle);
+
+	glBufferData(GL_ARRAY_BUFFER, land_triangle_white_data.size() * sizeof(GLfloat), &land_triangle_white_data[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "position"));
+	glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "position"),
+		components_per_position,
+		GL_FLOAT,
+		GL_FALSE,
+		components_per_vertex * sizeof(GLfloat),
+		NULL);
+
+	glEnableVertexAttribArray(glGetAttribLocation(perspective.get_program(), "colour"));
+	glVertexAttribPointer(glGetAttribLocation(perspective.get_program(), "colour"),
+		components_per_colour,
+		GL_FLOAT,
+		GL_TRUE,
+		components_per_vertex * sizeof(GLfloat),
+		(const GLvoid*)(components_per_position * sizeof(GLfloat)));
+
+
+
+	glEnable(GL_POLYGON_STIPPLE);
+
+
+	GLubyte white_stipple_pattern[] = {
+		0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0,0x0,0x0,0x0,0x0,0x0,0xf0,0x0,0xf0,0xf,0xf,0xf,0xf,0xf0,0x0,0xf0,0x0
+	
+	};
+
+
+	glPolygonStipple(white_stipple_pattern);
+
+
+	glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+	glDisable(GL_POLYGON_STIPPLE);
 
 
 
